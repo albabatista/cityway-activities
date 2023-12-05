@@ -1,8 +1,11 @@
-package com.cityway.activities.business.models;
+package com.cityway.activities.integration.models;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -10,13 +13,15 @@ import lombok.NoArgsConstructor;
 @Data 
 @NoArgsConstructor
 @EqualsAndHashCode( of = "id")
-public class Activity implements Serializable{
+@Document("activities")
+public class ActivityDto{
 	
+	@Id
 	private UUID id;
 	
 	private String name;
 	
-	private Category category;
+	private CategoryDto category;
 	
 	private String description;
 	
