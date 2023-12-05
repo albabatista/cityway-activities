@@ -1,11 +1,17 @@
 package com.cityway.activities.integration.models;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
+
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.TemporalType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -21,6 +27,7 @@ public class ActivityDto{
 	
 	private String name;
 	
+	@Enumerated(EnumType.STRING)
 	private CategoryDto category;
 	
 	private String description;
@@ -32,6 +39,9 @@ public class ActivityDto{
 	private String location;
 	
 	private List<String> languages;
+	
+	@jakarta.persistence.Temporal(TemporalType.DATE)
+	private List<Date> datesAvailable;
 	
 	private boolean adminPets;
 	

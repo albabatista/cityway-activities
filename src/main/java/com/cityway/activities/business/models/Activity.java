@@ -1,8 +1,10 @@
 package com.cityway.activities.business.models;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -27,6 +29,8 @@ public class Activity implements Serializable{
 	private String location;
 	
 	private List<String> languages;
+	
+	private List<Date> datesAvailable;
 	
 	private boolean adminPets;
 	
