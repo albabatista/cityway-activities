@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.cityway.activities.business.models.Activity;
 import com.cityway.activities.business.models.Category;
 import com.cityway.activities.integration.models.ActivityDto;
+import com.cityway.activities.integration.models.CategoryDto;
 
 /**
  * The Interface ActivityRepository.
@@ -16,14 +17,14 @@ import com.cityway.activities.integration.models.ActivityDto;
 @Repository
 public interface ActivityRepository extends MongoRepository<ActivityDto, UUID> {
 	
-	List<Activity> findByCategory(Category category);
-	List<Activity> findByCity(String city);
-	List<Activity> findBetweenPriceRange(double min, double max);
-	List<Activity> findByAdminPetsTrue();
-	List<Activity> findByWheelchairAcessibleTrue();
-	List<Activity> findByLanguagesContaining(String language);
+	List<ActivityDto> findByCategory(Category category);
+	List<ActivityDto> findByCity(String city);
+	List<ActivityDto> findBetweenPriceRange(double min, double max);
+	List<ActivityDto> findByAdminPetsTrue();
+	List<ActivityDto> findByWheelchairAcessibleTrue();
+	List<ActivityDto> findByLanguagesContaining(String language);
 	
-	long countByCategory(Category category);
+	long countByCategory(CategoryDto category);
 	long countByCity(String city);
 
 }
