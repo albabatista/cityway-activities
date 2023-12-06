@@ -1,7 +1,6 @@
 package com.cityway.activities.business.models;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,7 +29,7 @@ public class Activity implements Serializable{
 	
 	private List<String> languages;
 	
-	private List<Date> datesAvailable;
+	private Availability availability;
 	
 	private boolean adminPets;
 	

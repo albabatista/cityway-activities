@@ -1,6 +1,8 @@
 package com.cityway.activities.business.services.impl;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,87 +12,114 @@ import com.cityway.activities.business.models.Activity;
 import com.cityway.activities.business.models.Category;
 import com.cityway.activities.business.services.ActivityService;
 import com.cityway.activities.integration.mappers.ActivityMapper;
+import com.cityway.activities.integration.mappers.CategoryMapper;
+import com.cityway.activities.integration.models.ActivityDto;
+import com.cityway.activities.integration.models.CategoryDto;
 import com.cityway.activities.integration.repositories.ActivityRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class ActivityServiceImpl implements ActivityService {
-	
+
 	@Autowired
 	private ActivityRepository activityRepository;
-	
+
 	@Autowired
 	private ActivityMapper activityMapper;
 
+	@Autowired
+	private CategoryMapper categoryMapper;
+
+	@Transactional
 	@Override
-	public Activity create(Activity activity) {
-		// TODO Auto-generated method stub
-		return null;
+	public void create(Activity activity) {
+		if (activity == null) {
+			throw new IllegalArgumentException("Cannot save the activity because is null");
+		}
+
+		ActivityDto activityDto = activityMapper.activityToDto(activity);
+		activityRepository.save(activityDto);
 	}
 
 	@Override
 	public Activity read(UUID id) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<ActivityDto> optional = activityRepository.findById(id);
+		return optional.isPresent() ? activityMapper.dtoToActivity(optional.get()) : null;
 	}
 
+	@Transactional
 	@Override
-	public boolean update(Activity activity) {
-		// TODO Auto-generated method stub
-		return false;
+	public void update(Activity activity) {
+		create(activity);
 	}
 
+	@Transactional
 	@Override
-	public boolean delete(UUID id) {
-		// TODO Auto-generated method stub
-		return false;
+	public void delete(UUID id) {
+		activityRepository.deleteById(id);
 	}
 
+	@Transactional
 	@Override
-	public boolean delete(Activity activity) {
-		// TODO Auto-generated method stub
-		return false;
+	public void delete(Activity activity) {
+		ActivityDto activityDto = activityMapper.activityToDto(activity);
+		activityRepository.delete(activityDto);
 	}
 
 	@Override
 	public List<Activity> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		List<ActivityDto> activitiesList = activityRepository.findAll();
+		return convertIntegrationToBusinessList(activitiesList);
+	}
+
+	@Override
+	public List<Activity> getByNameContaining(String name) {
+		List<ActivityDto> activitiesList = activityRepository.findByNameContaining(name);
+		return convertIntegrationToBusinessList(activitiesList);
 	}
 
 	@Override
 	public List<Activity> getByCategory(Category category) {
-		// TODO Auto-generated method stub
-		return null;
+		CategoryDto categoryDto = categoryMapper.categoryToDto(category);
+		List<ActivityDto> activitiesList = activityRepository.findByCategory(categoryDto);
+		return convertIntegrationToBusinessList(activitiesList);
 	}
 
 	@Override
 	public List<Activity> getByCity(String city) {
-		// TODO Auto-generated method stub
-		return null;
+		List<ActivityDto> activitiesList = activityRepository.findByCity(city);
+		return convertIntegrationToBusinessList(activitiesList);
 	}
 
 	@Override
-	public List<Activity> getBetweenPriceRange(double min, double max) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Activity> getByPriceBetween(double min, double max) {
+		List<ActivityDto> activitiesList = activityRepository.findByPriceBetween(min, max);
+		return convertIntegrationToBusinessList(activitiesList);
 	}
 
 	@Override
 	public List<Activity> getByAdminPetsTrue() {
-		// TODO Auto-generated method stub
-		return null;
+		List<ActivityDto> activitiesList = activityRepository.findByAdminPetsTrue();
+		return convertIntegrationToBusinessList(activitiesList);
 	}
 
 	@Override
 	public List<Activity> getByWheelchairAcessibleTrue() {
-		// TODO Auto-generated method stub
-		return null;
+		List<ActivityDto> activitiesList = activityRepository.findByWheelchairAcessibleTrue();
+		return convertIntegrationToBusinessList(activitiesList);
 	}
 
 	@Override
 	public List<Activity> getByLanguaguesContaining(String languague) {
-		// TODO Auto-generated method stub
-		return null;
+		List<ActivityDto> activitiesList = activityRepository.findByLanguagesContaining(languague);
+		return convertIntegrationToBusinessList(activitiesList);
+	}
+
+	@Override
+	public List<Activity> getByDateAvailable(LocalDate date) {
+		List<ActivityDto> activitiesList = activityRepository.findByDateAvailable(date);
+		return convertIntegrationToBusinessList(activitiesList);
 	}
 
 	@Override
@@ -100,12 +129,17 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Override
 	public long getTotalNumberOfActivitiesByCategory(Category category) {
-		return activityRepository.countByCategory(category);
+		CategoryDto categoryDto = categoryMapper.categoryToDto(category);
+		return activityRepository.countByCategory(categoryDto);
 	}
 
 	@Override
 	public long getTotalNumberOfActivitiesByCity(String city) {
 		return activityRepository.countByCity(city);
+	}
+
+	private List<Activity> convertIntegrationToBusinessList(List<ActivityDto> activitiesDto) {
+		return activitiesDto.stream().map(x -> activityMapper.dtoToActivity(x)).toList();
 	}
 
 }

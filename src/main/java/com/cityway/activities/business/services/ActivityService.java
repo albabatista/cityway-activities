@@ -1,6 +1,7 @@
 
 package com.cityway.activities.business.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,19 +14,21 @@ import com.cityway.activities.business.models.Category;
 public interface ActivityService {
 	
 	
-	Activity create (Activity activity);	//CREATE C
-	Activity read (UUID id);				//READ	 R
-	boolean update (Activity activity);		//UPDATE U
-	boolean delete (UUID id);				//DELETE D
-	boolean delete (Activity activity);
+	void create (Activity activity);
+	Activity read (UUID id);	
+	void update (Activity activity);
+	void delete (UUID id);
+	void delete (Activity activity);
 	
 	List<Activity> getAll();
+	List<Activity> getByNameContaining(String name);
 	List<Activity> getByCategory(Category category);
 	List<Activity> getByCity(String city);
-	List<Activity> getBetweenPriceRange(double min, double max);
+	List<Activity> getByPriceBetween(double min, double max);
 	List<Activity> getByAdminPetsTrue();
 	List<Activity> getByWheelchairAcessibleTrue();
 	List<Activity> getByLanguaguesContaining(String languague);
+	List<Activity> getByDateAvailable(LocalDate date);
 	
 	long getTotalNumberOfActivities();
 	long getTotalNumberOfActivitiesByCategory(Category category);
