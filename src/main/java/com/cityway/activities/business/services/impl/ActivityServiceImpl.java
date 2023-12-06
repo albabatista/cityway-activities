@@ -17,8 +17,6 @@ import com.cityway.activities.integration.models.ActivityDto;
 import com.cityway.activities.integration.models.CategoryDto;
 import com.cityway.activities.integration.repositories.ActivityRepository;
 
-import jakarta.transaction.Transactional;
-
 @Service
 public class ActivityServiceImpl implements ActivityService {
 
@@ -31,7 +29,6 @@ public class ActivityServiceImpl implements ActivityService {
 	@Autowired
 	private CategoryMapper categoryMapper;
 
-	@Transactional
 	@Override
 	public void create(Activity activity) {
 		if (activity == null) {
@@ -48,19 +45,16 @@ public class ActivityServiceImpl implements ActivityService {
 		return optional.isPresent() ? activityMapper.dtoToActivity(optional.get()) : null;
 	}
 
-	@Transactional
 	@Override
 	public void update(Activity activity) {
 		create(activity);
 	}
 
-	@Transactional
 	@Override
 	public void delete(UUID id) {
 		activityRepository.deleteById(id);
 	}
 
-	@Transactional
 	@Override
 	public void delete(Activity activity) {
 		ActivityDto activityDto = activityMapper.activityToDto(activity);
