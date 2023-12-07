@@ -19,6 +19,7 @@
 		<org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
 		<org.projectlombok.version>1.18.20</org.projectlombok.version>
 		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+		<jacoco-plugin.version>0.8.11</jacoco-plugin.version>
 	</properties>
 	<dependencies>
 		
@@ -81,6 +82,14 @@
 			<scope>test</scope>
 		</dependency>
 		
+		<!-- Jacoco -->
+		<dependency>
+		    <groupId>org.jacoco</groupId>
+		    <artifactId>jacoco-maven-plugin</artifactId>
+		    <version>${jacoco-plugin.version}</version>
+		</dependency>
+
+		
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -97,7 +106,7 @@
 	<build>
 		<plugins>
 			
-			<!-- Lombok-->
+			<!-- Lombok -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -114,7 +123,7 @@
 				</configuration>
 			</plugin>
 			
-			<!-- Mapstruct-->
+			<!-- Mapstruct -->
 			<plugin>
 	            <groupId>org.apache.maven.plugins</groupId>
 	            <artifactId>maven-compiler-plugin</artifactId>
@@ -143,6 +152,27 @@
 	                </annotationProcessorPaths>
 	            </configuration>
 	        </plugin>
+	        
+	        <!-- Jacoco -->
+	        <plugin>
+			    <groupId>org.jacoco</groupId>
+			    <artifactId>jacoco-maven-plugin</artifactId>
+			    <version>${jacoco-plugin.version}</version>
+			    <executions>
+			        <execution>
+			            <goals>
+			                <goal>prepare-agent</goal>
+			            </goals>
+			        </execution>
+			        <execution>
+			            <id>report</id>
+			            <phase>prepare-package</phase>
+			            <goals>
+			                <goal>report</goal>
+			            </goals>
+			        </execution>
+			    </executions>
+			</plugin>
 	        
 		</plugins>
 	</build>
