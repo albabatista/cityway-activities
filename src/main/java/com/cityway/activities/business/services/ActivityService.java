@@ -1,7 +1,6 @@
 
 package com.cityway.activities.business.services;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import com.cityway.activities.business.models.Activity;
@@ -27,7 +26,7 @@ public interface ActivityService {
 	List<Activity> getByAdminPetsTrue();
 	List<Activity> getByWheelchairAcessibleTrue();
 	List<Activity> getByLanguaguesContaining(String languague);
-	List<Activity> getByDateAvailable(LocalDate date);
+	List<Activity> getByDateAvailable(String date);
 	
 	long getTotalNumberOfActivities();
 	long getTotalNumberOfActivitiesByCategory(Category category);

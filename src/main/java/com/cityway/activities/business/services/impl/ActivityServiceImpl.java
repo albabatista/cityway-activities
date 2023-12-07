@@ -1,6 +1,5 @@
 package com.cityway.activities.business.services.impl;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -110,7 +109,7 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	@Override
-	public List<Activity> getByDateAvailable(LocalDate date) {
+	public List<Activity> getByDateAvailable(String date) {
 		List<ActivityDto> activitiesList = activityRepository.findByDate(date);
 		return convertIntegrationToBusinessList(activitiesList);
 	}

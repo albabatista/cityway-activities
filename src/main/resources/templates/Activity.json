@@ -5,9 +5,9 @@
   "price": "159",
   "city": "Paris",
   "location": "Pullman Paris Tour Eiffel Hotel",
-  "languages:": ["English", "Spanish", "Italian", "German"],
+  "languages": ["English", "Spanish", "Italian", "German"],
   "datesAvailables":  
-      [ {"11-12-2023":["7:25","9:00"]}, {"18-12-2023":["7:45"]}],
+      [ {"11/12/2023":["7:25","9:00"]}, {"18/12/2023":["7:45"]}],
   "adminPets": false,
   "wheelchairAcessible": false
 }

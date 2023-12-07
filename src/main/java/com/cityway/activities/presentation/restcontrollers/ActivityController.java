@@ -1,10 +1,8 @@
 package com.cityway.activities.presentation.restcontrollers;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,7 +36,7 @@ public class ActivityController {
 									 @RequestParam (required = false) String language,
 									 @RequestParam (required = false, defaultValue = "0") Double min,
 									 @RequestParam (required = false) Double max,
-									 @RequestParam(required=false) @DateTimeFormat(pattern="dd/MM/yyyy") LocalDate date,
+									 @RequestParam(required=false)  String date,
 									 @RequestParam (required = false) Boolean wheelchairAcessible,
 									 @RequestParam (required = false) Boolean adminPets) {
 		
