@@ -2,7 +2,6 @@ package com.cityway.activities.presentation.restcontrollers;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -74,7 +73,7 @@ public class ActivityController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getById(@PathVariable UUID id) {
+	public ResponseEntity<?> getById(@PathVariable String id) {
 		Activity activity = activityService.read(id);
 
 		if (activity == null) {
@@ -104,7 +103,7 @@ public class ActivityController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteById(@PathVariable UUID id) {
+	public ResponseEntity<?> deleteById(@PathVariable String id) {
 
 		if (activityService.read(id) == null) {
 			throw new ActivityNotFoundException(id);
@@ -117,7 +116,7 @@ public class ActivityController {
 	@PutMapping
 	public ResponseEntity<?> update(@RequestBody Activity activity){
 		
-		UUID id = activity.getId();
+		String id = activity.getId();
 		
 		if(activityService.read(id)== null){
 			throw new ActivityNotFoundException(id);

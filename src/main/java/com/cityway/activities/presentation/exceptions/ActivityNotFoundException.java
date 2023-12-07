@@ -1,7 +1,5 @@
 package com.cityway.activities.presentation.exceptions;
 
-import java.util.UUID;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -15,7 +13,7 @@ public class ActivityNotFoundException extends RuntimeException {
 	
 	private static final long serialVersionUID = 1L;
 
-	public ActivityNotFoundException(UUID id) {
+	public ActivityNotFoundException(String id) {
 		super("Cannot find an activity with id: "+id);
 	}
 	

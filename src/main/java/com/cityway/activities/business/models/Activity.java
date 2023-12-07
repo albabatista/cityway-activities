@@ -1,8 +1,7 @@
 package com.cityway.activities.business.models;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.UUID;
+import java.util.Set;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,7 +12,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode( of = "id")
 public class Activity implements Serializable{
 	
-	private UUID id;
+	private String id;
 	
 	private String name;
 	
@@ -27,9 +26,9 @@ public class Activity implements Serializable{
 	
 	private String location;
 	
-	private List<String> languages;
+	private Set<String> languages;
 	
-	private Availability availability;
+	private Set<Availability> datesAvailables;
 	
 	private boolean adminPets;
 	

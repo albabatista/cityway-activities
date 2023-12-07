@@ -1,10 +1,12 @@
 package com.cityway.activities.integration.models;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.Set;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.cityway.activities.business.models.Availability;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class ActivityDto{
 	
 	@Id
-	private UUID id;
+	private String id;
 	
 	private String name;
 	
@@ -31,9 +33,10 @@ public class ActivityDto{
 	
 	private String location;
 	
-	private List<String> languages;
+	private Set<String> languages;
 	
-	private AvailabilityDto availability;
+	@Transient
+	private Set<Availability> datesAvailables;
 	
 	private boolean adminPets;
 	

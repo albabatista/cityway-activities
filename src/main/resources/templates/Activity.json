@@ -1,0 +1,13 @@
+{
+  "name": "Mont Saint Michel Day Trip",
+  "category": "DAY_TRIP",
+  "description": "Set off on a full-day trip to Mont Saint Michel from Paris. This medieval abbey is one of the most famous and iconic sights in France. The rocky island, declared a World Heritage site, was one of the country’s most important pilgrimage sites during the Middle Ages.",
+  "price": "159",
+  "city": "Paris",
+  "location": "Pullman Paris Tour Eiffel Hotel",
+  "languages:": ["English", "Spanish", "Italian", "German"],
+  "datesAvailables":  
+      [ {"11-12-2023":["7:25","9:00"]}, {"18-12-2023":["7:45"]}],
+  "adminPets": false,
+  "wheelchairAcessible": false
+}

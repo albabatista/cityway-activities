@@ -3,7 +3,6 @@ package com.cityway.activities.business.services.impl;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,7 +39,7 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	@Override
-	public Activity read(UUID id) {
+	public Activity read(String id) {
 		Optional<ActivityDto> optional = activityRepository.findById(id);
 		return optional.isPresent() ? activityMapper.dtoToActivity(optional.get()) : null;
 	}
@@ -51,7 +50,7 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	@Override
-	public void delete(UUID id) {
+	public void delete(String id) {
 		activityRepository.deleteById(id);
 	}
 
@@ -112,7 +111,7 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Override
 	public List<Activity> getByDateAvailable(LocalDate date) {
-		List<ActivityDto> activitiesList = activityRepository.findByDateAvailable(date);
+		List<ActivityDto> activitiesList = activityRepository.findByDate(date);
 		return convertIntegrationToBusinessList(activitiesList);
 	}
 

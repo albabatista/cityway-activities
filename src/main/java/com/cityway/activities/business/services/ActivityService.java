@@ -3,7 +3,6 @@ package com.cityway.activities.business.services;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 import com.cityway.activities.business.models.Activity;
 import com.cityway.activities.business.models.Category;
@@ -15,9 +14,9 @@ public interface ActivityService {
 	
 	
 	void create (Activity activity);
-	Activity read (UUID id);	
+	Activity read (String id);	
 	void update (Activity activity);
-	void delete (UUID id);
+	void delete (String id);
 	void delete (Activity activity);
 	
 	List<Activity> getAll();
