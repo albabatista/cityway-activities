@@ -21,6 +21,7 @@ import com.cityway.activities.business.models.Category;
 import com.cityway.activities.business.services.ActivityService;
 import com.cityway.activities.presentation.exceptions.ActivityNotFoundException;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -34,6 +35,9 @@ public class ActivityController {
 	private ActivityService activityService;
 
 	@GetMapping
+	@Operation(summary = "Get the activities", description = "Returns the activities")
+	@ApiResponse(responseCode = "200", description= "Successfully retrieved", content = { @Content(schema = @Schema(implementation = Activity.class), mediaType = "application/json") })
+	@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = { @Content(schema = @Schema()) })
 	public ResponseEntity<?> get( @RequestParam (required = false) String city,
 									 @RequestParam (required = false) Category category,
 									 @RequestParam (required = false) String name,
@@ -74,8 +78,9 @@ public class ActivityController {
 		return getResponse(listActivities);
 	}
 
-	@ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = Activity.class), mediaType = "application/json") })
-	@ApiResponse(responseCode = "404", description = "Cannot find the activity", content = { @Content(schema = @Schema()) })
+	@Operation(summary = "Get an activity as per the id", description = "Returns an activity as per the id")
+	@ApiResponse(responseCode = "200", description= "Successfully retrieved", content = { @Content(schema = @Schema(implementation = Activity.class), mediaType = "application/json") })
+	@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = { @Content(schema = @Schema()) })
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getById(@PathVariable String id) {
 		Activity activity = activityService.read(id);
@@ -87,6 +92,8 @@ public class ActivityController {
 		return ResponseEntity.ok(activity);
 	}
 
+	@Operation(summary = "Create a new activity", description = "Returns the link to the new activity")
+	@ApiResponse(responseCode = "201", description= "Successfully created", content = { @Content(schema = @Schema(implementation = Activity.class), mediaType = "application/json") })
 	@PostMapping
 	public ResponseEntity<?> create(@RequestBody Activity activity, UriComponentsBuilder uri) {
 		activityService.create(activity);
@@ -96,6 +103,9 @@ public class ActivityController {
 	}
 	
 	@DeleteMapping
+	@Operation(summary = "Delete the activity passed as parameter")
+	@ApiResponse(responseCode = "204", description = "Successfully deleted", content = { @Content(schema = @Schema()) })
+	@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = { @Content(schema = @Schema()) })
 	public ResponseEntity<?> delete(@RequestBody Activity activity) {
 
 		if (activity == null || activityService.read(activity.getId()) == null) {
@@ -107,6 +117,9 @@ public class ActivityController {
 	}
 
 	@DeleteMapping("/{id}")
+	@Operation(summary = "Delete the activity as per the id")
+	@ApiResponse(responseCode = "204", description = "Successfully deleted", content = { @Content(schema = @Schema()) })
+	@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = { @Content(schema = @Schema()) })
 	public ResponseEntity<?> deleteById(@PathVariable String id) {
 
 		if (activityService.read(id) == null) {
@@ -118,6 +131,9 @@ public class ActivityController {
 	}
 
 	@PutMapping
+	@Operation(summary = "Update the activity passed as parameter", description = "Returns the activity updated")
+	@ApiResponse(responseCode = "200", description= "Successfully updated", content = { @Content(schema = @Schema(implementation = Activity.class), mediaType = "application/json") })
+	@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = { @Content(schema = @Schema()) })
 	public ResponseEntity<?> update(@RequestBody Activity activity){
 		
 		String id = activity.getId();
