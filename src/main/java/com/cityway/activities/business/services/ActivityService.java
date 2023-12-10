@@ -24,7 +24,7 @@ public interface ActivityService {
 	List<Activity> getByCity(String city);
 	List<Activity> getByPriceBetween(double min, double max);
 	List<Activity> getByAdminPetsTrue();
-	List<Activity> getByWheelchairAcessibleTrue();
+	List<Activity> getByWheelchairAccessibleTrue();
 	List<Activity> getByLanguaguesContaining(String languague);
 	List<Activity> getByDateAvailable(String date);
 	

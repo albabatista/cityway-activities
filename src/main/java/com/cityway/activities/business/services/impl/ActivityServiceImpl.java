@@ -97,8 +97,8 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	@Override
-	public List<Activity> getByWheelchairAcessibleTrue() {
-		List<ActivityDto> activitiesList = activityRepository.findByWheelchairAcessibleTrue();
+	public List<Activity> getByWheelchairAccessibleTrue() {
+		List<ActivityDto> activitiesList = activityRepository.findByWheelchairAccessibleTrue();
 		return convertIntegrationToBusinessList(activitiesList);
 	}
 

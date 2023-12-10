@@ -21,6 +21,10 @@ import com.cityway.activities.business.models.Category;
 import com.cityway.activities.business.services.ActivityService;
 import com.cityway.activities.presentation.exceptions.ActivityNotFoundException;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+
 @RestController
 @CrossOrigin
 @RequestMapping("/activities")
@@ -37,7 +41,7 @@ public class ActivityController {
 									 @RequestParam (required = false, defaultValue = "0") Double min,
 									 @RequestParam (required = false) Double max,
 									 @RequestParam(required=false)  String date,
-									 @RequestParam (required = false) Boolean wheelchairAcessible,
+									 @RequestParam (required = false) Boolean wheelchairAccessible,
 									 @RequestParam (required = false) Boolean adminPets) {
 		
 		List<Activity> listActivities = activityService.getAll();
@@ -63,13 +67,15 @@ public class ActivityController {
 		}else if (Boolean.TRUE.equals(adminPets)) {
 			listActivities = activityService.getByAdminPetsTrue();
 		
-		}else if (Boolean.TRUE.equals(wheelchairAcessible)) {
-			listActivities = activityService.getByWheelchairAcessibleTrue();
+		}else if (Boolean.TRUE.equals(wheelchairAccessible)) {
+			listActivities = activityService.getByWheelchairAccessibleTrue();
 		}
 		
 		return getResponse(listActivities);
 	}
 
+	@ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = Activity.class), mediaType = "application/json") })
+	@ApiResponse(responseCode = "404", description = "Cannot find the activity", content = { @Content(schema = @Schema()) })
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getById(@PathVariable String id) {
 		Activity activity = activityService.read(id);

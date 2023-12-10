@@ -22,7 +22,7 @@ public interface ActivityRepository extends MongoRepository<ActivityDto, String>
 	List<ActivityDto> findByCity(String city);
 	List<ActivityDto> findByPriceBetween(double min, double max);
 	List<ActivityDto> findByAdminPetsTrue();
-	List<ActivityDto> findByWheelchairAcessibleTrue();
+	List<ActivityDto> findByWheelchairAccessibleTrue();
 	List<ActivityDto> findByLanguagesContaining(String language);
 	
 	@Query("{'datesAvailables.?0': ?0}")

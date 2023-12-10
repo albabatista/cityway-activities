@@ -9,5 +9,5 @@
   "datesAvailables":  
       [ {"11/12/2023":["7:25","9:00"]}, {"18/12/2023":["7:45"]}],
   "adminPets": false,
-  "wheelchairAcessible": false
+  "wheelchairAccessible": false
 }

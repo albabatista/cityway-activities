@@ -40,6 +40,6 @@ public class ActivityDto{
 	
 	private boolean adminPets;
 	
-	private boolean wheelchairAcessible;
+	private boolean wheelchairAccessible;
 
 }
