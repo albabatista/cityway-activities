@@ -1,6 +1,5 @@
 package com.cityway.activities.integration.repositories;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;

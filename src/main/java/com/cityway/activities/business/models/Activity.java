@@ -16,6 +16,8 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(of = "id")
 public class Activity implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	@Hidden
 	private String id;
 
