@@ -1,7 +1,6 @@
 package com.cityway.activities.business.models;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -50,8 +49,9 @@ public class Activity implements Serializable {
 	private Set<String> languages;
 
 	@NotBlank
-	@Schema(example = "[\"11/12/2023\", \"18/12/2023\"]")
-	private Set<Map<String, List<String>>> datesAvailables;
+	@Schema(additionalProperties = AdditionalPropertiesValue.TRUE, 
+		example = "{\"11/12/2023\":\"7:25\"}")
+	private Set<Map<String, Set<String>>> datesAvailables;
 
 	@Schema(example = "false", defaultValue = "false")
 	private boolean adminPets;

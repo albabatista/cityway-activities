@@ -1,6 +1,5 @@
 package com.cityway.activities.integration.models;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,7 +35,7 @@ public class ActivityDto{
 	
 	private Set<String> languages;
 	
-	private Set<Map<String, List<String>>> datesAvailables;
+	private Set<Map<String, Set<String>>> datesAvailables;
 	
 	private boolean adminPets;
 	
