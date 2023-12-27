@@ -6,7 +6,6 @@ import java.util.Set;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.media.Schema.AdditionalPropertiesValue;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -49,8 +48,11 @@ public class Activity implements Serializable {
 	private Set<String> languages;
 
 	@NotBlank
-	@Schema(additionalProperties = AdditionalPropertiesValue.TRUE, 
-		example = "{\"11/12/2023\":\"7:25\"}")
+	@Schema(example = """
+			{
+			  "11/12/2023": ["7:45"],
+			  "18/12/2023": ["7:25","9:00"]
+			}""")
 	private Set<Map<String, Set<String>>> datesAvailables;
 
 	@Schema(example = "false", defaultValue = "false")
