@@ -95,7 +95,8 @@ public class ActivityController {
 	}
 
 	@Operation(summary = "Create a new activity", description = "Returns the link to the new activity")
-	@ApiResponse(responseCode = "201", description= "Successfully created", content = { @Content(schema = @Schema(implementation = Activity.class), mediaType = "application/json") })
+	@ApiResponse(responseCode = "201", description= "Successfully created", 
+				content = { @Content(schema = @Schema(implementation = Activity.class), mediaType = "application/json") })
 	@PostMapping
 	public ResponseEntity<?> create(@RequestBody Activity activity, UriComponentsBuilder uri) {
 		activityService.create(activity);
@@ -134,7 +135,8 @@ public class ActivityController {
 
 	@PutMapping
 	@Operation(summary = "Update the activity passed as parameter", description = "Returns the activity updated")
-	@ApiResponse(responseCode = "200", description= "Successfully updated", content = { @Content(schema = @Schema(implementation = Activity.class), mediaType = "application/json") })
+	@ApiResponse(responseCode = "200", description= "Successfully updated", 
+				content = { @Content(schema = @Schema(implementation = Activity.class), mediaType = "application/json") })
 	@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = { @Content(schema = @Schema()) })
 	public ResponseEntity<?> update(@RequestBody Activity activity){
 		

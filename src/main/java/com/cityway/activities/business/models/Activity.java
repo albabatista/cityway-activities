@@ -7,6 +7,8 @@ import java.util.Set;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.AdditionalPropertiesValue;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -21,34 +23,40 @@ public class Activity implements Serializable {
 	@Hidden
 	private String id;
 
-	@Schema(description = "name of the activity (unique)", example = "Mont Saint Michel Day Trip")
+	@NotBlank
+	@Schema(example = "Mont Saint Michel Day Trip")
 	private String name;
 
-	@Schema(description = "category of the activity", example = "DAY_TRIP")
+	@NotBlank
+	@Schema(example = "DAY_TRIP")
 	private Category category;
 
-	@Schema(description = "description of the activity", example = "Set off on a full-day trip to Mont Saint Michel from Paris.")
+	@Schema(example = "Set off on a full-day trip to Mont Saint Michel from Paris.")
 	private String description;
 
-	@Schema(description = "price of the activity", example = "159")
+	@Schema(example = "159", defaultValue = "0")
 	private double price;
 
-	@Schema(description = "city of the activity", example = "Paris")
+	@NotBlank
+	@Schema(example = "Paris")
 	private String city;
 
-	@Schema(description = "location of the activity", example = "Pullman Paris Tour Eiffel Hotel")
+	@NotBlank
+	@Schema(example = "Pullman Paris Tour Eiffel Hotel")
 	private String location;
 
-	@Schema(description = "languages availables for the activity", example = "[\"English\", \"Spanish\", \"Italian\", \"German\"]")
+	@NotBlank
+	@Schema(example = "[\"English\", \"Spanish\", \"Italian\", \"German\"]")
 	private Set<String> languages;
 
-	@Schema(description = "dates availables for the activity", example = "[\"11/12/2023:[\"7:25\", \"9:00\"]\"]")
+	@NotBlank
+	@Schema(example = "[\"11/12/2023\", \"18/12/2023\"]")
 	private Set<Map<String, List<String>>> datesAvailables;
 
-	@Schema(description = "if admin pets in the activity", example = "false")
+	@Schema(example = "false", defaultValue = "false")
 	private boolean adminPets;
 
-	@Schema(description = "if the activity is accessible by wheelchair", example = "false")
+	@Schema(example = "false", defaultValue = "false")
 	private boolean wheelchairAccessible;
 
 }
