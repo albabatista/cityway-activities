@@ -39,7 +39,6 @@ public class Activity implements Serializable {
 	@Schema(example = "Paris")
 	private String city;
 
-	@NotBlank
 	@Schema(example = "Pullman Paris Tour Eiffel Hotel")
 	private String location;
 
