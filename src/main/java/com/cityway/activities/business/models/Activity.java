@@ -49,10 +49,19 @@ public class Activity implements Serializable {
 
 	@NotBlank
 	@Schema(example = """
-			{
-			  "11/12/2023": ["7:45"],
-			  "18/12/2023": ["7:25","9:00"]
-			}""")
+			[
+			  {
+			   "11/12/2023": [
+			     "7:25",
+			     "9:00"
+			   ]
+			 },
+			 {
+			   "18/12/2023": [
+			     "7:45"
+			   ]
+			 }
+			]""")
 	private Set<Map<String, Set<String>>> datesAvailables;
 
 	@Schema(example = "false", defaultValue = "false")
