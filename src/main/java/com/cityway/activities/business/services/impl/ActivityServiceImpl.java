@@ -90,7 +90,7 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Override
 	public List<Activity> getByCity(String city) {
-		List<ActivityDto> activitiesList = activityRepository.findByCity(city);
+		List<ActivityDto> activitiesList = activityRepository.findByCity(ActivitiesUtils.capitalize(city));
 		return convertIntegrationToBusinessList(activitiesList);
 	}
 
@@ -114,7 +114,7 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Override
 	public List<Activity> getByLanguaguesContaining(String languague) {
-		List<ActivityDto> activitiesList = activityRepository.findByLanguagesContaining(languague);
+		List<ActivityDto> activitiesList = activityRepository.findByLanguagesContaining(ActivitiesUtils.capitalize(languague));
 		return convertIntegrationToBusinessList(activitiesList);
 	}
 
@@ -137,7 +137,7 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Override
 	public long getTotalNumberOfActivitiesByCity(String city) {
-		return activityRepository.countByCity(city);
+		return activityRepository.countByCity(ActivitiesUtils.capitalize(city));
 	}
 
 	// ***************************************************************
