@@ -9,6 +9,7 @@ This microservice has a 3 layer architecture (business, integration and presenta
 - Spring Data
 - Spring Web
 - Spring Cloud: Eureka Client
+- Spring AOP
 - Mapstruct
 - Lombok
 - Mongo DB
