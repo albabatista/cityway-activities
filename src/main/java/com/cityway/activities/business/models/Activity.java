@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
 
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -18,7 +17,7 @@ public class Activity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Hidden
+	@Schema(example = "6571f425f55ae713957d8454")
 	private String id;
 
 	@NotBlank

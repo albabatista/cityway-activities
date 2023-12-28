@@ -17,6 +17,7 @@ import com.cityway.activities.integration.mappers.CategoryMapper;
 import com.cityway.activities.integration.models.ActivityDto;
 import com.cityway.activities.integration.models.CategoryDto;
 import com.cityway.activities.integration.repositories.ActivityRepository;
+import com.cityway.activities.presentation.exceptions.ActivityNotFoundException;
 
 @Service
 public class ActivityServiceImpl implements ActivityService {
@@ -35,18 +36,8 @@ public class ActivityServiceImpl implements ActivityService {
 		if (activity == null) {
 			throw new IllegalArgumentException("Cannot save the activity because is null");
 		}
+		save(activity);
 
-		ActivityDto activityDto = activityMapper.activityToDto(activity);
-		
-		UnaryOperator<ActivityDto> capitalizeFields = a -> {
-			a.setName(ActivitiesUtils.capitalize(a.getName()));
-			a.setCity(ActivitiesUtils.capitalize(a.getCity()));
-			a.setLanguages(capitalizeStringsFromList(a.getLanguages()));
-			return a;
-		};
-		
-		activityDto = capitalizeFields.apply(activityDto);
-		activityRepository.save(activityDto);
 	}
 
 	@Override
@@ -57,7 +48,14 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Override
 	public void update(Activity activity) {
-		create(activity);
+		if (activity == null) {
+			throw new IllegalArgumentException("Cannot save the activity because is null");
+
+		} else if (!activityRepository.existsById(activity.getId())) {
+			throw new ActivityNotFoundException("Activity with id " + activity.getId() + " not found");
+		}
+		
+		save(activity);
 	}
 
 	@Override
@@ -142,22 +140,33 @@ public class ActivityServiceImpl implements ActivityService {
 		return activityRepository.countByCity(city);
 	}
 
-	
 	// ***************************************************************
 	//
 	// PRIVATE METHODS
 	//
 	// ***************************************************************
-		
+
 	private List<Activity> convertIntegrationToBusinessList(List<ActivityDto> activitiesDto) {
 		return activitiesDto.stream().map(x -> activityMapper.dtoToActivity(x)).toList();
 	}
-	
-	
+
 	private Set<String> capitalizeStringsFromList(Set<String> list) {
 		List<String> resultList = list.stream().map(ActivitiesUtils::capitalize).toList();
 		return Set.copyOf(resultList);
 	}
 
+	private void save(Activity activity) {
+		ActivityDto activityDto = activityMapper.activityToDto(activity);
+
+		UnaryOperator<ActivityDto> capitalizeFields = a -> {
+			a.setName(ActivitiesUtils.capitalize(a.getName()));
+			a.setCity(ActivitiesUtils.capitalize(a.getCity()));
+			a.setLanguages(capitalizeStringsFromList(a.getLanguages()));
+			return a;
+		};
+
+		activityDto = capitalizeFields.apply(activityDto);
+		activityRepository.save(activityDto);
+	}
 
 }
