@@ -77,7 +77,7 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Override
 	public List<Activity> getByNameContaining(String name) {
-		List<ActivityDto> activitiesList = activityRepository.findByNameContaining(name);
+		List<ActivityDto> activitiesList = activityRepository.findByNameContaining(ActivitiesUtils.capitalize(name));
 		return convertIntegrationToBusinessList(activitiesList);
 	}
 
