@@ -11,6 +11,12 @@ public class ActivitiesUtils {
 
 	public static String SPACE = " ";
 
+	/**
+	 * Capitalize.
+	 *
+	 * @param phrase the phrase
+	 * @return the string
+	 */
 	public static String capitalize(String phrase) {
 
 		StringBuilder result = new StringBuilder();
