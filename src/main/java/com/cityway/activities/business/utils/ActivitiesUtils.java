@@ -23,9 +23,9 @@ public class ActivitiesUtils {
 
 		if (phrase !=null && !phrase.isBlank()) {
 			
-			String[] words = phrase.trim().split(" ");
+			String[] words = phrase.replace(".", "").trim().split(" ");
 
-			UnaryOperator<String> capitalizeWord = t -> t.substring(0, 1).toUpperCase() + t.substring(1);
+			UnaryOperator<String> capitalizeWord = t -> t.substring(0, 1).toUpperCase() + t.substring(1).toLowerCase();
 
 			for (int i = 0; i < words.length; i++) {
 				result.append(capitalizeWord.apply(words[i]));

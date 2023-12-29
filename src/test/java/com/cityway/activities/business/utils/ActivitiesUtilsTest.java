@@ -12,7 +12,7 @@ class ActivitiesUtilsTest {
 	@ParameterizedTest
 	@EmptySource
 	@NullSource
-	@ValueSource(strings = { "  ", " mont saint michel day trip " })
+	@ValueSource(strings = { "  ", " mont saint michel day trip. ", " MONT SAINT MICHEL DAY TRIP" })
 	void capitalizeTest(String phrase) {
 
 		String resultExpected = (phrase == null || phrase.isBlank()) ? ActivitiesUtils.EMPTY
