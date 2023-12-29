@@ -24,7 +24,7 @@ public interface ActivityRepository extends MongoRepository<ActivityDto, String>
 	List<ActivityDto> findByWheelchairAccessibleTrue();
 	List<ActivityDto> findByLanguagesContaining(String language);
 	
-	@Query("{'datesAvailables.?0': ?0}")
+	@Query("{'datesAvailables': {$elemMatch: {?0 :{$exists:true}}}}")
 	List<ActivityDto> findByDate(String date);
 	
 	long countByCategory(CategoryDto category);
