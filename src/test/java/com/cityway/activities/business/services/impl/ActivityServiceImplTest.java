@@ -1,14 +1,18 @@
 package com.cityway.activities.business.services.impl;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.net.URL;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -42,8 +46,7 @@ class ActivityServiceImplTest {
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		activity = objectMapper.readValue(pathJsonFile, Activity.class);
-		activity.setId("6571");
-		activityDto = activityMapper.activityToDto(activity);
+		activityDto = objectMapper.readValue(pathJsonFile, ActivityDto.class);
 	}
 
 	@ParameterizedTest
@@ -56,11 +59,11 @@ class ActivityServiceImplTest {
 			assertThrows(IllegalArgumentException.class, () -> activityServiceImpl.create(activity));
 
 		} else {
+			when(activityMapper.activityToDto(activity)).thenReturn(activityDto);
 			activityServiceImpl.create(activity);
 			verify(activityRepository, times(1)).save(activityDto);
 		}
 
 	}
-
 
 }
