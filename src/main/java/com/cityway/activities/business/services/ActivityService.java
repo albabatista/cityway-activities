@@ -27,8 +27,5 @@ public interface ActivityService {
 	List<Activity> getByWheelchairAccessibleTrue();
 	List<Activity> getByLanguaguesContaining(String languague);
 	List<Activity> getByDateAvailable(String date);
-	
-	long getTotalNumberOfActivities();
-	long getTotalNumberOfActivitiesByCategory(Category category);
-	long getTotalNumberOfActivitiesByCity(String city);
+
 }

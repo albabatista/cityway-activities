@@ -124,21 +124,8 @@ public class ActivityServiceImpl implements ActivityService {
 		return convertIntegrationToBusinessList(activitiesList);
 	}
 
-	@Override
-	public long getTotalNumberOfActivities() {
-		return activityRepository.count();
-	}
+	
 
-	@Override
-	public long getTotalNumberOfActivitiesByCategory(Category category) {
-		CategoryDto categoryDto = categoryMapper.categoryToDto(category);
-		return activityRepository.countByCategory(categoryDto);
-	}
-
-	@Override
-	public long getTotalNumberOfActivitiesByCity(String city) {
-		return activityRepository.countByCity(ActivitiesUtils.capitalize(city));
-	}
 
 	// ***************************************************************
 	//

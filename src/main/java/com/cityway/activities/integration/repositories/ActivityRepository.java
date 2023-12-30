@@ -27,7 +27,4 @@ public interface ActivityRepository extends MongoRepository<ActivityDto, String>
 	@Query("{'datesAvailables': {$elemMatch: {?0 :{$exists:true}}}}")
 	List<ActivityDto> findByDate(String date);
 	
-	long countByCategory(CategoryDto category);
-	long countByCity(String city);
-
 }
