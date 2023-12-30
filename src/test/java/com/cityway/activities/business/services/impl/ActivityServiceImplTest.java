@@ -1,6 +1,7 @@
 package com.cityway.activities.business.services.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -62,6 +63,24 @@ class ActivityServiceImplTest {
 			when(activityMapper.activityToDto(activity)).thenReturn(activityDto);
 			activityServiceImpl.create(activity);
 			verify(activityRepository, times(1)).save(activityDto);
+		}
+
+	}
+
+	@ParameterizedTest
+	@EmptySource
+	@ValueSource(strings = "658da42b7e5c3c47845cbfe8")
+	public void readTest(String id) {
+		when(activityMapper.activityToDto(activity)).thenReturn(activityDto);
+		activityServiceImpl.create(activity);
+		
+		if (!id.isEmpty()) {
+			when(activityRepository.findById(id)).thenReturn(Optional.of(activityDto));
+			when(activityMapper.dtoToActivity(activityDto)).thenReturn(activity);
+			assertEquals(activity, activityServiceImpl.read(id));
+		}else {
+			when(activityRepository.findById(id)).thenReturn(Optional.empty());
+			assertNull(activityServiceImpl.read(id));
 		}
 
 	}
