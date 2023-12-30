@@ -97,7 +97,7 @@ class ActivityServiceImplTest {
 			
 		}else if (id.isEmpty()) {
 			activity = new Activity();
-			activity.setId("0");
+			activity.setId(id);
 			assertThrows(ActivityNotFoundException.class, () -> activityServiceImpl.update(activity));
 		}else {
 			when(activityRepository.existsById(id)).thenReturn(true);
