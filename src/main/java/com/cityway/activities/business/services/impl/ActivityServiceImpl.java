@@ -124,8 +124,6 @@ public class ActivityServiceImpl implements ActivityService {
 		return convertIntegrationToBusinessList(activitiesList);
 	}
 
-	
-
 
 	// ***************************************************************
 	//
