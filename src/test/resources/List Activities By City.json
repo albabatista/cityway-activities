@@ -1,0 +1,75 @@
+[
+  {
+    "id": "6571f677f269f235388edf51",
+    "name": "Eiffel Tower Climb",
+    "category": "ENTRANCE_TICKETS",
+    "description": "There's a reason the Eiffel Tower is one of the most visited monuments in the world: climb up more than 700 stairs to enjoy unforgettable views of Paris from three different levels of the iconic structure  it's well worth the effort!",
+    "price": 39,
+    "city": "Paris",
+    "location": "The Pont d'Iéna steps, next to the Carrousel",
+    "languages": [
+      "English",
+      "Spanish"
+    ],
+    "datesAvailables": [
+      {
+        "11/12/2023": [
+          "9:30",
+          "11:30",
+          "15:30",
+          "17:30",
+          "19:30"
+        ]
+      },
+      {
+        "13/12/2023": [
+          "10:30",
+          "11:30",
+          "15:30",
+          "17:30",
+          "19:30"
+        ]
+      },
+      {
+        "17/12/2023": [
+          "9:30",
+          "11:30",
+          "12:30",
+          "18:30"
+        ]
+      }
+    ],
+    "adminPets": false,
+    "wheelchairAccessible": false
+  },
+  {
+    "id": "6571f425f55ae713957d8454",
+    "name": "Mont Saint Michel Day Trip",
+    "category": "DAY_TRIP",
+    "description": "Set off on a full-day trip to Mont Saint Michel from Paris.",
+    "price": 159,
+    "city": "Paris",
+    "location": "Pullman Paris Tour Eiffel Hotel",
+    "languages": [
+      "English",
+      "German",
+      "Spanish",
+      "Italian"
+    ],
+    "datesAvailables": [
+      {
+        "18/12/2023": [
+          "7:45"
+        ]
+      },
+      {
+        "11/12/2023": [
+          "9:00",
+          "7:25"
+        ]
+      }
+    ],
+    "adminPets": false,
+    "wheelchairAccessible": false
+  }
+]

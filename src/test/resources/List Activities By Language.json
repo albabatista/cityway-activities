@@ -1,0 +1,61 @@
+[
+  {
+    "id": "6571f425f55ae713957d8455",
+    "name": "London Eye Ticket",
+    "category": "ENTRANCE_TICKETS",
+    "description": "Buying tickets for the London Eye, you will enjoy beautiful panoramic views of London from the highest Ferris wheel in Europe, a unique experience in the British capital!",
+    "price": 33.9,
+    "city": "London",
+    "location": "London Eye",
+    "languages": [
+      "English",
+      "Spanish",
+      "German"
+    ],
+    "datesAvailables": [
+      {
+        "30/12/2023": [
+          "17:15",
+          "17:00",
+          "16:30",
+          "17:45",
+          "16:45",
+          "17:30",
+          "18:00"
+        ]
+      }
+    ],
+    "adminPets": false,
+    "wheelchairAccessible": false
+  },
+  {
+    "id": "6571f425f55ae713957d8454",
+    "name": "Mont Saint Michel Day Trip",
+    "category": "DAY_TRIP",
+    "description": "Set off on a full-day trip to Mont Saint Michel from Paris.",
+    "price": 159,
+    "city": "Paris",
+    "location": "Pullman Paris Tour Eiffel Hotel",
+    "languages": [
+      "English",
+      "German",
+      "Spanish",
+      "Italian"
+    ],
+    "datesAvailables": [
+      {
+        "18/12/2023": [
+          "7:45"
+        ]
+      },
+      {
+        "11/12/2023": [
+          "9:00",
+          "7:25"
+        ]
+      }
+    ],
+    "adminPets": false,
+    "wheelchairAccessible": false
+  }
+]
