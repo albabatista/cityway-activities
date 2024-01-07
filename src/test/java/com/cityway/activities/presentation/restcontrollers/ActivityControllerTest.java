@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -14,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -51,6 +54,18 @@ class ActivityControllerTest {
 	void setUp() throws Exception {
 		activity = objectMapper.readValue(getJsonUrlFromTestResources("Activity.json"), Activity.class);
 		activities = initList(null);
+	}
+	
+	@Test
+	void createTest() throws Exception {
+		
+		String requestBody = objectMapper.writeValueAsString(activity);
+		
+		mockMvc.perform(post("/activities")
+					.content(requestBody)
+					.contentType("application/json"))
+					.andExpect(status().isCreated())
+					.andExpect(header().string("Location", "http://localhost/activities/"+activity.getId()));	
 	}
 	
 	@ParameterizedTest
