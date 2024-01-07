@@ -1,0 +1,200 @@
+[
+  {
+    "id": "6571f677f269f235388edf51",
+    "name": "Eiffel Tower Climb",
+    "category": "ENTRANCE_TICKETS",
+    "description": "There's a reason the Eiffel Tower is one of the most visited monuments in the world: climb up more than 700 stairs to enjoy unforgettable views of Paris from three different levels of the iconic structure  it's well worth the effort!",
+    "price": 39,
+    "city": "Paris",
+    "location": "The Pont d'Iéna steps, next to the Carrousel",
+    "languages": [
+      "English",
+      "Spanish"
+    ],
+    "datesAvailables": [
+      {
+        "11/12/2023": [
+          "9:30",
+          "11:30",
+          "15:30",
+          "17:30",
+          "19:30"
+        ]
+      },
+      {
+        "13/12/2023": [
+          "10:30",
+          "11:30",
+          "15:30",
+          "17:30",
+          "19:30"
+        ]
+      },
+      {
+        "17/12/2023": [
+          "9:30",
+          "11:30",
+          "12:30",
+          "18:30"
+        ]
+      }
+    ],
+    "adminPets": false,
+    "wheelchairAccessible": false
+  },
+  {
+    "id": "6571f7fef269f235388edf52",
+    "name": "Colosseum, Roman Forum & Palatine Hill Tour",
+    "category": "GUIDED_TOUR",
+    "description": "Travel back in time to Ancient Rome on this tour: the best way to get to know the Italian capital, its main monuments, and its amazing history. It'll be a journey through 2,000 years in just 3 hours!",
+    "price": 47,
+    "city": "Rome",
+    "location": "Colosseo metro stop, the Via dei Fori Imperiali exit",
+    "languages": [
+      "English",
+      "French",
+      "Spanish"
+    ],
+    "datesAvailables": [
+      {
+        "23/12/2023": [
+          "13:00",
+          "13:30"
+        ]
+      },
+      {
+        "16/12/2023": [
+          "13:30"
+        ]
+      },
+      {
+        "30/12/2023": [
+          "13:00",
+          "13:30"
+        ]
+      }
+    ],
+    "adminPets": false,
+    "wheelchairAccessible": false
+  },
+  {
+    "id": "658da42b7e5c3c47845cbfe8",
+    "name": "Venice Free Tour",
+    "category": "FREE_TOUR",
+    "description": "See Venice through the eyes of a true Venetian! On this 2-hour free tour of Venice, we will walk the streets and see the most important landmarks of the City of Canals.",
+    "price": 0,
+    "city": "Venice",
+    "location": "Gallerie dell Accademia",
+    "languages": [
+      "English",
+      "Portuguese",
+      "Spanish"
+    ],
+    "datesAvailables": [
+      {
+        "14/01/2024": [
+          "10:30"
+        ]
+      },
+      {
+        "16/01/2024": [
+          "10:30",
+          "17:00"
+        ]
+      }
+    ],
+    "adminPets": false,
+    "wheelchairAccessible": false
+  },
+  {
+    "id": "658db5b8c3ee902228e27d93",
+    "name": "Cappadocia Hot Air Balloon Ride",
+    "category": "ADVENTURE",
+    "description": "When you think of Cappadocia, the image that comes to mind is hundreds of colourful hot air balloons flying over spectacular natural landscapes. Witness the incredible sight for yourself!",
+    "price": 180,
+    "city": "Cappadocia",
+    "location": null,
+    "languages": [
+      "Spanish",
+      "English"
+    ],
+    "datesAvailables": [
+      {
+        "05/01/2024": [
+          "5:00"
+        ]
+      },
+      {
+        "06/01/2024": [
+          "5:00"
+        ]
+      },
+      {
+        "07/01/2024": [
+          "5:00"
+        ]
+      }
+    ],
+    "adminPets": false,
+    "wheelchairAccessible": false
+  },
+  {
+    "id": "6571f425f55ae713957d8455",
+    "name": "London Eye Ticket",
+    "category": "ENTRANCE_TICKETS",
+    "description": "Buying tickets for the London Eye, you will enjoy beautiful panoramic views of London from the highest Ferris wheel in Europe, a unique experience in the British capital!",
+    "price": 33.9,
+    "city": "London",
+    "location": "London Eye",
+    "languages": [
+      "English",
+      "Spanish",
+      "German"
+    ],
+    "datesAvailables": [
+      {
+        "30/12/2023": [
+          "17:15",
+          "17:00",
+          "16:30",
+          "17:45",
+          "16:45",
+          "17:30",
+          "18:00"
+        ]
+      }
+    ],
+    "adminPets": false,
+    "wheelchairAccessible": false
+  },
+  {
+    "id": "6571f425f55ae713957d8454",
+    "name": "Mont Saint Michel Day Trip",
+    "category": "DAY_TRIP",
+    "description": "Set off on a full-day trip to Mont Saint Michel from Paris.",
+    "price": 159,
+    "city": "Paris",
+    "location": "Pullman Paris Tour Eiffel Hotel",
+    "languages": [
+      "English",
+      "German",
+      "Spanish",
+      "Italian"
+    ],
+    "datesAvailables": [
+      {
+        "18/12/2023": [
+          "7:45"
+        ]
+      },
+      {
+        "11/12/2023": [
+          "9:00",
+          "7:25"
+        ]
+      }
+    ],
+    "adminPets": false,
+    "wheelchairAccessible": false
+  }
+]
