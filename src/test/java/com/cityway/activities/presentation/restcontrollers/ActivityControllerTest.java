@@ -52,6 +52,21 @@ class ActivityControllerTest {
 		activity = objectMapper.readValue(getJsonUrlFromTestResources("Activity.json"), Activity.class);
 		activities = initList(null);
 	}
+	
+	@ParameterizedTest
+	@ValueSource(strings = "658da42b7e5c3c47845cbfe8")
+	void getByIdTest(String id) throws Exception {
+		
+		when(activityService.read(id)).thenReturn(activity);
+		
+		MvcResult mvcResult = mockMvc.perform(get("/activities/"+id).contentType("application/json"))
+				.andExpect(status().isOk())
+				.andReturn();
+
+		String responseBody= mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+		assertThat(responseBody).isEqualToIgnoringWhitespace(objectMapper.writeValueAsString(activity));
+	}
 
 	@ParameterizedTest
 	@EmptySource
