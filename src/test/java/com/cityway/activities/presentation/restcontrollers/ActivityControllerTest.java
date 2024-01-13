@@ -3,8 +3,10 @@ package com.cityway.activities.presentation.restcontrollers;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -55,19 +57,48 @@ class ActivityControllerTest {
 		activity = objectMapper.readValue(getJsonUrlFromTestResources("Activity.json"), Activity.class);
 		activities = initList(null);
 	}
-	
+
 	@Test
 	void createTest() throws Exception {
-		
+
+		String requestBody = objectMapper.writeValueAsString(activity);
+
+		mockMvc.perform(post("/activities").content(requestBody).contentType("application/json"))
+				.andExpect(status().isCreated())
+				.andExpect(header().string("Location", "http://localhost/activities/" + activity.getId()));
+	}
+
+	@Test
+	void deleteTest() throws Exception {
+		String requestBody = objectMapper.writeValueAsString(activity);
+
+		when(activityService.read(activity.getId())).thenReturn(activity);
+
+		mockMvc.perform(delete("/activities").content(requestBody).contentType("application/json"))
+				.andExpect(status().isNoContent()).andReturn();
+	}
+
+	@Test
+	void deleteById() throws Exception {
+		String id = "658da42b7e5c3c47845cbfe8";
+
+		when(activityService.read(id)).thenReturn(activity);
+
+		mockMvc.perform(delete("/activities/" + id).contentType("application/json")).andExpect(status().isNoContent())
+				.andReturn();
+
+	}
+
+	@Test
+	void updateTest() throws Exception {
 		String requestBody = objectMapper.writeValueAsString(activity);
 		
-		mockMvc.perform(post("/activities")
-					.content(requestBody)
-					.contentType("application/json"))
-					.andExpect(status().isCreated())
-					.andExpect(header().string("Location", "http://localhost/activities/"+activity.getId()));	
+		when(activityService.read(activity.getId())).thenReturn(activity);
+
+		mockMvc.perform(put("/activities").content(requestBody).contentType("application/json"))
+				.andExpect(status().isOk());
 	}
-	
+
 	@ParameterizedTest
 	@ValueSource(strings = "658da42b7e5c3c47845cbfe8")
 	void getByIdTest(String id) throws Exception {
@@ -85,7 +116,7 @@ class ActivityControllerTest {
 
 	@ParameterizedTest
 	@EmptySource
-	@ValueSource(strings = { "Paris", "German", "Saint", "ENTRANCE_TICKETS" })
+	@ValueSource(strings = { "Paris", "German", "Saint", "ENTRANCE_TICKETS", "11/12/2023" })
 	void getTest(String paramValue) throws Exception {
 		MvcResult mvcResult = null;
 
@@ -105,13 +136,19 @@ class ActivityControllerTest {
 
 		} else if ("Saint".equals(paramValue)) { // GetByName
 			activities = List.of(activity);
-			when(activityService.getByNameContaining("Saint")).thenReturn(activities);
+			when(activityService.getByNameContaining(paramValue)).thenReturn(activities);
 			mvcResult = getMvcResultByParam("name", paramValue);
 
 		} else if ("German".equals(paramValue)) { // GetByLanguage
 			activities = initList("List Activities By Language.json");
-			when(activityService.getByLanguaguesContaining("German")).thenReturn(activities);
+			when(activityService.getByLanguaguesContaining(paramValue)).thenReturn(activities);
 			mvcResult = getMvcResultByParam("language", paramValue);
+		
+		}else if ("11/12/2023".equals(paramValue)) { // GetByName
+			activities = List.of(activity);
+			when(activityService.getByDateAvailable(paramValue)).thenReturn(activities);
+			mvcResult = getMvcResultByParam("date", paramValue);
+
 		}
 
 		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);

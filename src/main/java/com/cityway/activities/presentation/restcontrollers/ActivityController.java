@@ -110,13 +110,13 @@ public class ActivityController {
 	@ApiResponse(responseCode = "204", description = "Successfully deleted", content = { @Content(schema = @Schema()) })
 	@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = { @Content(schema = @Schema()) })
 	public ResponseEntity<?> delete(@RequestBody Activity activity) {
-
-		if (activity == null || activityService.read(activity.getId()) == null) {
-			throw new ActivityNotFoundException(activity);
+		
+		if ((activity != null) && (activityService.read(activity.getId()) != null)) {
+			activityService.delete(activity);
+			return ResponseEntity.noContent().build();
 		}
 
-		activityService.delete(activity);
-		return ResponseEntity.noContent().build();
+		throw new ActivityNotFoundException(activity);		
 	}
 
 	@DeleteMapping("/{id}")
@@ -125,7 +125,7 @@ public class ActivityController {
 	@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = { @Content(schema = @Schema()) })
 	public ResponseEntity<?> deleteById(@PathVariable String id) {
 
-		if (activityService.read(id) == null) {
+		if (id.isBlank() || activityService.read(id) == null) {
 			throw new ActivityNotFoundException(id);
 		}
 
