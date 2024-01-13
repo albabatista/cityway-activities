@@ -194,7 +194,7 @@
 						<exclude>com/cityway/activities/business/models/*.class</exclude>
 						<exclude>com/cityway/activities/integration/models/*.class</exclude>
 						<exclude>com/cityway/activities/integration/mappers/*.class</exclude>
-						<exclude>com/cityway/activities/presentation/exceptions/ApiError.class</exclude>
+						<exclude>com/cityway/activities/presentation/exceptions/*.class</exclude>
 					</excludes>
 				</configuration>
 			</plugin>

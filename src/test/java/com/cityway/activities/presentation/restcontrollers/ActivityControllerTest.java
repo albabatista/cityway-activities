@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -52,6 +53,10 @@ class ActivityControllerTest {
 
 	private List<Activity> activities;
 
+	private final String CONTENT_TYPE = "application/json";
+	private final String ENDPOINT = "/activities";
+	private final String ENDPOINT_PATH_VARIABLE = "/activities/";
+
 	@BeforeEach
 	void setUp() throws Exception {
 		activity = objectMapper.readValue(getJsonUrlFromTestResources("Activity.json"), Activity.class);
@@ -60,11 +65,9 @@ class ActivityControllerTest {
 
 	@Test
 	void createTest() throws Exception {
-
 		String requestBody = objectMapper.writeValueAsString(activity);
 
-		mockMvc.perform(post("/activities").content(requestBody).contentType("application/json"))
-				.andExpect(status().isCreated())
+		mockMvc.perform(post(ENDPOINT).content(requestBody).contentType(CONTENT_TYPE)).andExpect(status().isCreated())
 				.andExpect(header().string("Location", "http://localhost/activities/" + activity.getId()));
 	}
 
@@ -74,86 +77,143 @@ class ActivityControllerTest {
 
 		when(activityService.read(activity.getId())).thenReturn(activity);
 
-		mockMvc.perform(delete("/activities").content(requestBody).contentType("application/json"))
+		mockMvc.perform(delete(ENDPOINT).content(requestBody).contentType(CONTENT_TYPE))
 				.andExpect(status().isNoContent()).andReturn();
 	}
 
-	@Test
-	void deleteById() throws Exception {
-		String id = "658da42b7e5c3c47845cbfe8";
+	@ParameterizedTest
+	@EmptySource
+	@ValueSource(strings = { "658da42b7e5c3c47845cbfe8" })
+	void deleteById(String id) throws Exception {
+		if (!id.isEmpty()) {
+			when(activityService.read(id)).thenReturn(activity);
+			mockMvc.perform(delete(ENDPOINT_PATH_VARIABLE + id).contentType(CONTENT_TYPE))
+					.andExpect(status().isNoContent()).andReturn();
 
-		when(activityService.read(id)).thenReturn(activity);
-
-		mockMvc.perform(delete("/activities/" + id).contentType("application/json")).andExpect(status().isNoContent())
-				.andReturn();
-
+		} else {
+			mockMvc.perform(delete(ENDPOINT_PATH_VARIABLE + id).contentType(CONTENT_TYPE))
+					.andExpect(status().isNotFound()).andReturn();
+		}
 	}
 
 	@Test
 	void updateTest() throws Exception {
 		String requestBody = objectMapper.writeValueAsString(activity);
-		
+
 		when(activityService.read(activity.getId())).thenReturn(activity);
 
-		mockMvc.perform(put("/activities").content(requestBody).contentType("application/json"))
-				.andExpect(status().isOk());
-	}
-
-	@ParameterizedTest
-	@ValueSource(strings = "658da42b7e5c3c47845cbfe8")
-	void getByIdTest(String id) throws Exception {
-		
-		when(activityService.read(id)).thenReturn(activity);
-		
-		MvcResult mvcResult = mockMvc.perform(get("/activities/"+id).contentType("application/json"))
-				.andExpect(status().isOk())
-				.andReturn();
-
-		String responseBody= mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-
-		assertThat(responseBody).isEqualToIgnoringWhitespace(objectMapper.writeValueAsString(activity));
+		mockMvc.perform(put(ENDPOINT).content(requestBody).contentType(CONTENT_TYPE)).andExpect(status().isOk());
 	}
 
 	@ParameterizedTest
 	@EmptySource
-	@ValueSource(strings = { "Paris", "German", "Saint", "ENTRANCE_TICKETS", "11/12/2023" })
-	void getTest(String paramValue) throws Exception {
-		MvcResult mvcResult = null;
+	@ValueSource(strings = { "658da42b7e5c3c47845cbfe8" })
+	void getByIdTest(String id) throws Exception {
 
-		if (paramValue.isEmpty()) { // GetAll
-			when(activityService.getAll()).thenReturn(activities);
-			mvcResult = getMvcResultByParam(null, paramValue);
+		if (!id.isEmpty()) {
+			when(activityService.read(id)).thenReturn(activity);
 
-		} else if ("Paris".equals(paramValue)) { // GetByCity
-			activities = initList("List Activities By City.json");
-			when(activityService.getByCity(paramValue)).thenReturn(activities);
-			mvcResult = getMvcResultByParam("city", paramValue);
+			MvcResult mvcResult = mockMvc.perform(get(ENDPOINT_PATH_VARIABLE + id).contentType(CONTENT_TYPE))
+					.andExpect(status().isOk()).andReturn();
 
-		} else if ("ENTRANCE_TICKETS".equals(paramValue)) { // GetByCategory
-			activities = initList("List Activities By Category.json");
-			when(activityService.getByCategory(Category.ENTRANCE_TICKETS)).thenReturn(activities);
-			mvcResult = getMvcResultByParam("category", paramValue);
+			String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+			assertThat(responseBody).isEqualToIgnoringWhitespace(objectMapper.writeValueAsString(activity));
 
-		} else if ("Saint".equals(paramValue)) { // GetByName
-			activities = List.of(activity);
-			when(activityService.getByNameContaining(paramValue)).thenReturn(activities);
-			mvcResult = getMvcResultByParam("name", paramValue);
-
-		} else if ("German".equals(paramValue)) { // GetByLanguage
-			activities = initList("List Activities By Language.json");
-			when(activityService.getByLanguaguesContaining(paramValue)).thenReturn(activities);
-			mvcResult = getMvcResultByParam("language", paramValue);
-		
-		}else if ("11/12/2023".equals(paramValue)) { // GetByName
-			activities = List.of(activity);
-			when(activityService.getByDateAvailable(paramValue)).thenReturn(activities);
-			mvcResult = getMvcResultByParam("date", paramValue);
-
+		} else {
+			when(activityService.read(id)).thenReturn(null);
+			mockMvc.perform(get(ENDPOINT_PATH_VARIABLE + id).contentType(CONTENT_TYPE)).andExpect(status().isNotFound())
+					.andReturn();
 		}
+
+	}
+
+	@Test
+	void getAllTest() throws Exception {
+		when(activityService.getAll()).thenReturn(activities);
+		MvcResult mvcResult  = getMvcResultByParam(null, "");
+		
+		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+		assertThat(responseBody).isEqualToIgnoringWhitespace(objectMapper.writeValueAsString(activities));
+	}
+
+	@Test
+	void getByCityTest() throws Exception {
+		activities = initList("List Activities By City.json");
+		when(activityService.getByCity("Paris")).thenReturn(activities);
+		MvcResult mvcResult = getMvcResultByParam("city", "Paris");
 
 		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
 		assertThat(responseBody).isEqualToIgnoringWhitespace(objectMapper.writeValueAsString(activities));
+	}
 
+	@Test
+	void getByCategoryTest() throws Exception {
+		activities = initList("List Activities By Category.json");
+		when(activityService.getByCategory(Category.ENTRANCE_TICKETS)).thenReturn(activities);
+		MvcResult mvcResult = getMvcResultByParam("category", "ENTRANCE_TICKETS");
+
+		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+		assertThat(responseBody).isEqualToIgnoringWhitespace(objectMapper.writeValueAsString(activities));
+	}
+
+	@Test
+	void getByNameTest() throws Exception {
+		activities = List.of(activity);
+		when(activityService.getByNameContaining("Saint")).thenReturn(activities);
+		MvcResult mvcResult = getMvcResultByParam("name", "Saint");
+
+		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+		assertThat(responseBody).isEqualToIgnoringWhitespace(objectMapper.writeValueAsString(activities));
+	}
+
+	@Test
+	void getByLanguageTest() throws Exception {
+		activities = initList("List Activities By Language.json");
+		when(activityService.getByLanguaguesContaining("German")).thenReturn(activities);
+		MvcResult mvcResult = getMvcResultByParam("language", "German");
+
+		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+		assertThat(responseBody).isEqualToIgnoringWhitespace(objectMapper.writeValueAsString(activities));
+	}
+
+	@Test
+	void getByDateTest() throws Exception {
+		activities = List.of(activity);
+		when(activityService.getByDateAvailable("11/12/2023")).thenReturn(activities);
+		MvcResult mvcResult = getMvcResultByParam("date", "11/12/2023");
+
+		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+		assertThat(responseBody).isEqualToIgnoringWhitespace(objectMapper.writeValueAsString(activities));
+	}
+
+	@Test
+	void getByPriceTest() throws Exception {
+		activities = List.of(activity);
+		when(activityService.getByPriceBetween(150, 160)).thenReturn(activities);
+		MvcResult mvcResult = mockMvc
+				.perform(get(ENDPOINT).param("min", "150").param("max", "160").contentType(CONTENT_TYPE))
+				.andExpect(status().isOk()).andReturn();
+
+		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+		assertThat(responseBody).isEqualToIgnoringWhitespace(objectMapper.writeValueAsString(activities));
+	}
+
+	@Test
+	void getByAdminPetsTest() throws Exception {
+		activities = new ArrayList<Activity>();
+		when(activityService.getByAdminPetsTrue()).thenReturn(activities);
+
+		mockMvc.perform(get(ENDPOINT).param("adminPets", "true").contentType(CONTENT_TYPE))
+				.andExpect(status().isNotFound()).andReturn();
+	}
+
+	@Test
+	void getByWheelchairAccessibleTest() throws Exception {
+		activities = new ArrayList<Activity>();
+		when(activityService.getByWheelchairAccessibleTrue()).thenReturn(activities);
+
+		mockMvc.perform(get(ENDPOINT).param("wheelchairAccessible", "true").contentType(CONTENT_TYPE))
+				.andExpect(status().isNotFound()).andReturn();
 	}
 
 	// *****************************************************************
@@ -206,11 +266,11 @@ class ActivityControllerTest {
 	private MvcResult getMvcResultByParam(String paramName, String paramValue) throws Exception {
 
 		if (paramName != null && !paramName.isBlank()) {
-			return mockMvc.perform(get("/activities").param(paramName, paramValue).contentType("application/json"))
+			return mockMvc.perform(get(ENDPOINT).param(paramName, paramValue).contentType(CONTENT_TYPE))
 					.andExpect(status().isOk()).andReturn();
 
 		}
-		return mockMvc.perform(get("/activities").contentType("application/json")).andExpect(status().isOk())
+		return mockMvc.perform(get(ENDPOINT).contentType(CONTENT_TYPE)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.length()", is(6))).andReturn();
 
 	}
