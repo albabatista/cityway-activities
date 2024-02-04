@@ -16,13 +16,13 @@ import com.cityway.activities.integration.models.CategoryDto;
 @Repository
 public interface ActivityRepository extends MongoRepository<ActivityDto, String> {
 	
-	List<ActivityDto> findByNameContaining(String name);
+	List<ActivityDto> findByNameContainingIgnoreCase(String name);
 	List<ActivityDto> findByCategory(CategoryDto category);
-	List<ActivityDto> findByCity(String city);
+	List<ActivityDto> findByCityIgnoreCase(String city);
 	List<ActivityDto> findByPriceBetween(double min, double max);
 	List<ActivityDto> findByAdminPetsTrue();
 	List<ActivityDto> findByWheelchairAccessibleTrue();
-	List<ActivityDto> findByLanguagesContaining(String language);
+	List<ActivityDto> findByLanguagesContainingIgnoreCase(String language);
 	
 	@Query("{'datesAvailables': {$elemMatch: {?0 :{$exists:true}}}}")
 	List<ActivityDto> findByDate(String date);

@@ -160,14 +160,14 @@ class ActivityServiceImplTest {
 	@Test
 	void getByCityTest() {
 		initGetTest();
-		when(activityRepository.findByCity("Paris")).thenReturn(List.of(activityDto, activity2Dto));
+		when(activityRepository.findByCityIgnoreCase("Paris")).thenReturn(List.of(activityDto, activity2Dto));
 		assertEquals(2, activityServiceImpl.getByCity("Paris").size());
 	}
 
 	@Test
 	void getByNameTest() {
 		initGetTest();
-		when(activityRepository.findByNameContaining("Saint")).thenReturn(List.of(activityDto));
+		when(activityRepository.findByNameContainingIgnoreCase("Saint")).thenReturn(List.of(activityDto));
 		assertEquals(1, activityServiceImpl.getByNameContaining("Saint").size());
 	}
 
@@ -181,7 +181,7 @@ class ActivityServiceImplTest {
 	@Test
 	void getByLanguageTest() {
 		initGetTest();
-		when(activityRepository.findByLanguagesContaining("English"))
+		when(activityRepository.findByLanguagesContainingIgnoreCase("English"))
 				.thenReturn(List.of(activityDto, activity2Dto, activity3Dto));
 		assertEquals(3, activityServiceImpl.getByLanguaguesContaining("English").size());
 	}

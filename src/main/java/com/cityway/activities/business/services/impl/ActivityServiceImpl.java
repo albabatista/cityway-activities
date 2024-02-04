@@ -2,8 +2,6 @@ package com.cityway.activities.business.services.impl;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.function.UnaryOperator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.cityway.activities.business.models.Activity;
 import com.cityway.activities.business.models.Category;
 import com.cityway.activities.business.services.ActivityService;
-import com.cityway.activities.business.utils.ActivitiesUtils;
 import com.cityway.activities.integration.mappers.ActivityMapper;
 import com.cityway.activities.integration.mappers.CategoryMapper;
 import com.cityway.activities.integration.models.ActivityDto;
@@ -36,7 +33,9 @@ public class ActivityServiceImpl implements ActivityService {
 		if (activity == null) {
 			throw new IllegalArgumentException("Cannot save the activity because is null");
 		}
-		save(activity);
+		
+		ActivityDto activityDto = activityMapper.activityToDto(activity);
+		activityRepository.save(activityDto);
 
 	}
 
@@ -54,8 +53,9 @@ public class ActivityServiceImpl implements ActivityService {
 		} else if (!activityRepository.existsById(activity.getId())) {
 			throw new ActivityNotFoundException("Activity with id " + activity.getId() + " not found");
 		}
-		
-		save(activity);
+
+		ActivityDto activityDto = activityMapper.activityToDto(activity);
+		activityRepository.save(activityDto);
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Override
 	public List<Activity> getByNameContaining(String name) {
-		List<ActivityDto> activitiesList = activityRepository.findByNameContaining(ActivitiesUtils.capitalize(name));
+		List<ActivityDto> activitiesList = activityRepository.findByNameContainingIgnoreCase(name);
 		return convertIntegrationToBusinessList(activitiesList);
 	}
 
@@ -90,7 +90,7 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Override
 	public List<Activity> getByCity(String city) {
-		List<ActivityDto> activitiesList = activityRepository.findByCity(ActivitiesUtils.capitalize(city));
+		List<ActivityDto> activitiesList = activityRepository.findByCityIgnoreCase(city);
 		return convertIntegrationToBusinessList(activitiesList);
 	}
 
@@ -114,7 +114,7 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Override
 	public List<Activity> getByLanguaguesContaining(String languague) {
-		List<ActivityDto> activitiesList = activityRepository.findByLanguagesContaining(ActivitiesUtils.capitalize(languague));
+		List<ActivityDto> activitiesList = activityRepository.findByLanguagesContainingIgnoreCase(languague);
 		return convertIntegrationToBusinessList(activitiesList);
 	}
 
@@ -124,7 +124,6 @@ public class ActivityServiceImpl implements ActivityService {
 		return convertIntegrationToBusinessList(activitiesList);
 	}
 
-
 	// ***************************************************************
 	//
 	// PRIVATE METHODS
@@ -133,25 +132,6 @@ public class ActivityServiceImpl implements ActivityService {
 
 	private List<Activity> convertIntegrationToBusinessList(List<ActivityDto> activitiesDto) {
 		return activitiesDto.stream().map(x -> activityMapper.dtoToActivity(x)).toList();
-	}
-
-	private Set<String> capitalizeStringsFromList(Set<String> list) {
-		List<String> resultList = list.stream().map(ActivitiesUtils::capitalize).toList();
-		return Set.copyOf(resultList);
-	}
-
-	private void save(Activity activity) {
-		ActivityDto activityDto = activityMapper.activityToDto(activity);
-
-		UnaryOperator<ActivityDto> capitalizeFields = a -> {
-			a.setName(ActivitiesUtils.capitalize(a.getName()));
-			a.setCity(ActivitiesUtils.capitalize(a.getCity()));
-			a.setLanguages(capitalizeStringsFromList(a.getLanguages()));
-			return a;
-		};
-
-		activityDto = capitalizeFields.apply(activityDto);
-		activityRepository.save(activityDto);
 	}
 
 }

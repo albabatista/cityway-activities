@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 
-import com.cityway.activities.business.utils.ActivitiesUtils;
 
 /**
  * The Class LogAspectConfig.
@@ -61,7 +60,7 @@ public class LogAspectConfig {
 
 		}
 	
-		return list.isEmpty()? ActivitiesUtils.EMPTY : Arrays.toString(list.toArray());
+		return list.isEmpty()? "" : Arrays.toString(list.toArray());
 	}
 
 }
