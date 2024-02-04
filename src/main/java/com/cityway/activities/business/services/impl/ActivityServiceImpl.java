@@ -2,6 +2,7 @@ package com.cityway.activities.business.services.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.cityway.activities.business.models.Activity;
 import com.cityway.activities.business.models.Category;
 import com.cityway.activities.business.services.ActivityService;
+import com.cityway.activities.business.utils.ActivityUtils;
 import com.cityway.activities.integration.mappers.ActivityMapper;
 import com.cityway.activities.integration.mappers.CategoryMapper;
 import com.cityway.activities.integration.models.ActivityDto;
@@ -35,6 +37,10 @@ public class ActivityServiceImpl implements ActivityService {
 		}
 		
 		ActivityDto activityDto = activityMapper.activityToDto(activity);
+		
+		Set<String> languages = capitalizeStringsFromList(activityDto.getLanguages());
+		activityDto.setLanguages(languages);
+		
 		activityRepository.save(activityDto);
 
 	}
@@ -55,6 +61,10 @@ public class ActivityServiceImpl implements ActivityService {
 		}
 
 		ActivityDto activityDto = activityMapper.activityToDto(activity);
+		
+		Set<String> languages = capitalizeStringsFromList(activityDto.getLanguages());
+		activityDto.setLanguages(languages);
+		
 		activityRepository.save(activityDto);
 	}
 
@@ -132,6 +142,11 @@ public class ActivityServiceImpl implements ActivityService {
 
 	private List<Activity> convertIntegrationToBusinessList(List<ActivityDto> activitiesDto) {
 		return activitiesDto.stream().map(x -> activityMapper.dtoToActivity(x)).toList();
+	}
+	
+	private Set<String> capitalizeStringsFromList(Set<String> list) {
+		List<String> resultList = list.stream().map(ActivityUtils::toCapitalizeFully).toList();
+		return Set.copyOf(resultList);
 	}
 
 }

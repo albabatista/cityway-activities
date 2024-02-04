@@ -4,10 +4,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.convert.ValueConverter;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.cityway.activities.integration.annotations.ToCapitalize;
+import com.cityway.activities.integration.annotations.impl.ToCapitalizeFullyConverter;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,7 +23,7 @@ public class ActivityDto{
 	@Id
 	private String id;
 	
-	@ToCapitalize
+	@ValueConverter(ToCapitalizeFullyConverter.class)
     @Indexed(unique = true)
 	private String name;
 	
@@ -32,13 +33,12 @@ public class ActivityDto{
 	
 	private double price;
 	
-	@ToCapitalize
+	@ValueConverter(ToCapitalizeFullyConverter.class)
 	private String city;
 	
-	@ToCapitalize
+	@ValueConverter(ToCapitalizeFullyConverter.class)
 	private String location;
 	
-	@ToCapitalize
 	private Set<String> languages;
 	
 	private Set<Map<String, Set<String>>> datesAvailables;
