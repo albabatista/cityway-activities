@@ -38,6 +38,10 @@ public class ActivityServiceImpl implements ActivityService {
 		
 		ActivityDto activityDto = activityMapper.activityToDto(activity);
 		
+		activityDto.setName(ActivityUtils.toCapitalizeFully(activityDto.getName()));
+		activityDto.setCity(ActivityUtils.toCapitalizeFully(activityDto.getCity()));
+		activityDto.setLocation(ActivityUtils.toCapitalizeFully(activityDto.getLocation()));
+		
 		Set<String> languages = capitalizeStringsFromList(activityDto.getLanguages());
 		activityDto.setLanguages(languages);
 		
@@ -61,6 +65,10 @@ public class ActivityServiceImpl implements ActivityService {
 		}
 
 		ActivityDto activityDto = activityMapper.activityToDto(activity);
+		
+		activityDto.setName(ActivityUtils.toCapitalizeFully(activityDto.getName()));
+		activityDto.setCity(ActivityUtils.toCapitalizeFully(activityDto.getCity()));
+		activityDto.setLocation(ActivityUtils.toCapitalizeFully(activityDto.getLocation()));
 		
 		Set<String> languages = capitalizeStringsFromList(activityDto.getLanguages());
 		activityDto.setLanguages(languages);
