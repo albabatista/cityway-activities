@@ -7,9 +7,9 @@ import java.util.List;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
+
+import lombok.extern.slf4j.Slf4j;
 
 
 /**
@@ -17,9 +17,9 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @Aspect
+@Slf4j
 public class LogAspectConfig {
 
-	private static final Logger LOG = LoggerFactory.getLogger(LogAspectConfig.class);
 
 	/**
 	 * Controllers logger.
@@ -33,10 +33,10 @@ public class LogAspectConfig {
 		String params = extractParams(joinPoint.getArgs());
 
 		if (!params.isBlank()) {
-			LOG.info("{} call {} method with params: {}", controllerName, method, params);
+			log.info("{} call {} method with params: {}", controllerName, method, params);
 
 		} else {
-			LOG.info("{} call {} method", controllerName, method);
+			log.info("{} call {} method", controllerName, method);
 		}
 
 	}
