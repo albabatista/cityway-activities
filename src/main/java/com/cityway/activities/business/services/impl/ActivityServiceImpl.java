@@ -4,13 +4,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.apache.commons.lang.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cityway.activities.business.models.Activity;
 import com.cityway.activities.business.models.Category;
 import com.cityway.activities.business.services.ActivityService;
-import com.cityway.activities.business.utils.ActivityUtils;
 import com.cityway.activities.integration.mappers.ActivityMapper;
 import com.cityway.activities.integration.mappers.CategoryMapper;
 import com.cityway.activities.integration.models.ActivityDto;
@@ -35,16 +35,8 @@ public class ActivityServiceImpl implements ActivityService {
 		if (activity == null) {
 			throw new IllegalArgumentException("Cannot save the activity because is null");
 		}
-		
-		ActivityDto activityDto = activityMapper.activityToDto(activity);
-		
-		activityDto.setName(ActivityUtils.toCapitalizeFully(activityDto.getName()));
-		activityDto.setCity(ActivityUtils.toCapitalizeFully(activityDto.getCity()));
-		activityDto.setLocation(ActivityUtils.toCapitalizeFully(activityDto.getLocation()));
-		
-		Set<String> languages = capitalizeStringsFromList(activityDto.getLanguages());
-		activityDto.setLanguages(languages);
-		
+
+		ActivityDto activityDto = capitalizeFields(activityMapper.activityToDto(activity));
 		activityRepository.save(activityDto);
 
 	}
@@ -64,15 +56,7 @@ public class ActivityServiceImpl implements ActivityService {
 			throw new ActivityNotFoundException("Activity with id " + activity.getId() + " not found");
 		}
 
-		ActivityDto activityDto = activityMapper.activityToDto(activity);
-		
-		activityDto.setName(ActivityUtils.toCapitalizeFully(activityDto.getName()));
-		activityDto.setCity(ActivityUtils.toCapitalizeFully(activityDto.getCity()));
-		activityDto.setLocation(ActivityUtils.toCapitalizeFully(activityDto.getLocation()));
-		
-		Set<String> languages = capitalizeStringsFromList(activityDto.getLanguages());
-		activityDto.setLanguages(languages);
-		
+		ActivityDto activityDto = capitalizeFields(activityMapper.activityToDto(activity));
 		activityRepository.save(activityDto);
 	}
 
@@ -151,10 +135,20 @@ public class ActivityServiceImpl implements ActivityService {
 	private List<Activity> convertIntegrationToBusinessList(List<ActivityDto> activitiesDto) {
 		return activitiesDto.stream().map(x -> activityMapper.dtoToActivity(x)).toList();
 	}
-	
-	private Set<String> capitalizeStringsFromList(Set<String> list) {
-		List<String> resultList = list.stream().map(ActivityUtils::toCapitalizeFully).toList();
-		return Set.copyOf(resultList);
+
+	private ActivityDto capitalizeFields(ActivityDto activityDto) {
+		activityDto.setName(WordUtils.capitalizeFully(activityDto.getName()).trim());
+		activityDto.setCity(WordUtils.capitalizeFully(activityDto.getCity()).trim());
+		activityDto.setLocation(WordUtils.capitalizeFully(activityDto.getLocation().trim()));
+		
+		Set<String> languages = Set.copyOf(
+				activityDto.getLanguages().stream()
+				.map(WordUtils::capitalizeFully)
+				.map(String::trim)
+				.toList());
+		activityDto.setLanguages(languages);
+		
+		return activityDto;
 	}
 
 }
