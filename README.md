@@ -1,4 +1,4 @@
-# cityway-activities
+# cityway-bookings
 
 This is **the activities microservice**, which is part of **CityWay (Full Stack Project)**.
 
