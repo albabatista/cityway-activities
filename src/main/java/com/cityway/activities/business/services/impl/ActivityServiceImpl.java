@@ -53,7 +53,7 @@ public class ActivityServiceImpl implements ActivityService {
 			throw new IllegalArgumentException("Cannot save the activity because is null");
 
 		} else if (!activityRepository.existsById(activity.getId())) {
-			throw new ActivityNotFoundException("Activity with id " + activity.getId() + " not found");
+			throw new ActivityNotFoundException(activity.getId());
 		}
 
 		ActivityDto activityDto = capitalizeFields(activityMapper.activityToDto(activity));
