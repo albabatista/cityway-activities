@@ -18,7 +18,7 @@ public class ActivityNotFoundException extends RuntimeException {
 	}
 	
 	public ActivityNotFoundException(Activity activity) {
-		super("Activity: "+activity+ "not found");
+		super("Activity: "+activity+ " not found");
 	}
 	
 }
