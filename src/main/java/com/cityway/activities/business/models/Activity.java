@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -13,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Activity implements Serializable {
+public class Activity extends RepresentationModel<Activity> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -37,6 +39,10 @@ public class Activity implements Serializable {
 	@NotBlank
 	@Schema(example = "Paris")
 	private String city;
+	
+	@NotBlank
+	@Schema(example = "France")
+	private String country;
 
 	@Schema(example = "Pullman Paris Tour Eiffel Hotel")
 	private String location;

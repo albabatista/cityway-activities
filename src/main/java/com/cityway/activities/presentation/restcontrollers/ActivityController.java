@@ -1,5 +1,7 @@
 package com.cityway.activities.presentation.restcontrollers;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,7 +92,9 @@ public class ActivityController {
 		if (activity == null) {
 			throw new ActivityNotFoundException(id);
 		}
-
+		
+		activity = addSelfLink(activity);
+		
 		return ResponseEntity.ok(activity);
 	}
 
@@ -151,7 +155,16 @@ public class ActivityController {
 	}	
 
 	private ResponseEntity<?> getResponse(List<Activity> list) {
-		return list.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(list);
+		return list.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(addingSelfReferences(list));
+	}
+	
+	private Activity addSelfLink(Activity activity) {
+		return activity.add(linkTo(ActivityController.class).slash(activity.getId()).withSelfRel());
+	}
+	
+	private List<Activity> addingSelfReferences(List<Activity> activities) {
+		return activities.stream().map(x -> addSelfLink(x)).toList();	
+
 	}
 
 }

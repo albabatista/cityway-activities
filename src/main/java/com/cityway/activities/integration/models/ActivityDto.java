@@ -30,6 +30,8 @@ public class ActivityDto {
 	private double price;
 
 	private String city;
+	
+	private String country;
 
 	private String location;
 

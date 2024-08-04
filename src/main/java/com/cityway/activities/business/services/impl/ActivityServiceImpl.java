@@ -139,6 +139,7 @@ public class ActivityServiceImpl implements ActivityService {
 	private ActivityDto capitalizeFields(ActivityDto activityDto) {
 		activityDto.setName(WordUtils.capitalizeFully(activityDto.getName()).trim());
 		activityDto.setCity(WordUtils.capitalizeFully(activityDto.getCity()).trim());
+		activityDto.setCountry(WordUtils.capitalizeFully(activityDto.getCountry()).trim());
 		activityDto.setLocation(WordUtils.capitalizeFully(activityDto.getLocation().trim()));
 		
 		Set<String> languages = Set.copyOf(
