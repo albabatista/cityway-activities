@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.cityway.activities.business.models.Activity;
@@ -29,7 +30,7 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Autowired
 	private CategoryMapper categoryMapper;
-
+	
 	@Override
 	public void create(Activity activity) {
 		if (activity == null) {
@@ -73,7 +74,7 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Override
 	public List<Activity> getAll() {
-		List<ActivityDto> activitiesList = activityRepository.findAll();
+		List<ActivityDto> activitiesList = activityRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
 		return convertIntegrationToBusinessList(activitiesList);
 	}
 
@@ -86,13 +87,13 @@ public class ActivityServiceImpl implements ActivityService {
 	@Override
 	public List<Activity> getByCategory(Category category) {
 		CategoryDto categoryDto = categoryMapper.categoryToDto(category);
-		List<ActivityDto> activitiesList = activityRepository.findByCategory(categoryDto);
+		List<ActivityDto> activitiesList = activityRepository.findByCategoryOrderByName(categoryDto);
 		return convertIntegrationToBusinessList(activitiesList);
 	}
 
 	@Override
 	public List<Activity> getByCity(String city) {
-		List<ActivityDto> activitiesList = activityRepository.findByCityIgnoreCase(city);
+		List<ActivityDto> activitiesList = activityRepository.findByCityIgnoreCaseOrderByName(city);
 		return convertIntegrationToBusinessList(activitiesList);
 	}
 
@@ -104,19 +105,19 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Override
 	public List<Activity> getByAdminPetsTrue() {
-		List<ActivityDto> activitiesList = activityRepository.findByAdminPetsTrue();
+		List<ActivityDto> activitiesList = activityRepository.findByAdminPetsTrueOrderByName();
 		return convertIntegrationToBusinessList(activitiesList);
 	}
 
 	@Override
 	public List<Activity> getByWheelchairAccessibleTrue() {
-		List<ActivityDto> activitiesList = activityRepository.findByWheelchairAccessibleTrue();
+		List<ActivityDto> activitiesList = activityRepository.findByWheelchairAccessibleTrueOrderByName();
 		return convertIntegrationToBusinessList(activitiesList);
 	}
 
 	@Override
 	public List<Activity> getByLanguaguesContaining(String languague) {
-		List<ActivityDto> activitiesList = activityRepository.findByLanguagesContainingIgnoreCase(languague);
+		List<ActivityDto> activitiesList = activityRepository.findByLanguagesContainingIgnoreCaseOrderByName(languague);
 		return convertIntegrationToBusinessList(activitiesList);
 	}
 

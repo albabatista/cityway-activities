@@ -146,7 +146,7 @@ class ActivityServiceImplTest {
 		initGetTest();
 		when(categoryMapper.categoryToDto(Category.DAY_TRIP)).thenReturn(categoryDto);
 
-		when(activityRepository.findByCategory(categoryDto)).thenReturn(List.of(activityDto));
+		when(activityRepository.findByCategoryOrderByName(categoryDto)).thenReturn(List.of(activityDto));
 		assertEquals(1, activityServiceImpl.getByCategory(Category.DAY_TRIP).size());
 	}
 
@@ -160,7 +160,7 @@ class ActivityServiceImplTest {
 	@Test
 	void getByCityTest() {
 		initGetTest();
-		when(activityRepository.findByCityIgnoreCase("Paris")).thenReturn(List.of(activityDto, activity2Dto));
+		when(activityRepository.findByCityIgnoreCaseOrderByName("Paris")).thenReturn(List.of(activityDto, activity2Dto));
 		assertEquals(2, activityServiceImpl.getByCity("Paris").size());
 	}
 
@@ -181,7 +181,7 @@ class ActivityServiceImplTest {
 	@Test
 	void getByLanguageTest() {
 		initGetTest();
-		when(activityRepository.findByLanguagesContainingIgnoreCase("English"))
+		when(activityRepository.findByLanguagesContainingIgnoreCaseOrderByName("English"))
 				.thenReturn(List.of(activityDto, activity2Dto, activity3Dto));
 		assertEquals(3, activityServiceImpl.getByLanguaguesContaining("English").size());
 	}
@@ -195,13 +195,13 @@ class ActivityServiceImplTest {
 
 	@Test
 	void getByAdminPetsTrueTest(){
-		when(activityRepository.findByAdminPetsTrue()).thenReturn(List.of());
+		when(activityRepository.findByAdminPetsTrueOrderByName()).thenReturn(List.of());
 		assertEquals(0, activityServiceImpl.getByAdminPetsTrue().size());
 	}
 
 	@Test
 	void getByWheelchairAccessibleTrueTest(){
-		when(activityRepository.findByWheelchairAccessibleTrue()).thenReturn(List.of());
+		when(activityRepository.findByWheelchairAccessibleTrueOrderByName()).thenReturn(List.of());
 		assertEquals(0, activityServiceImpl.getByWheelchairAccessibleTrue().size());
 	}
 
