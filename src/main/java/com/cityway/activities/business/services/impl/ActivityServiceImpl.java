@@ -96,6 +96,12 @@ public class ActivityServiceImpl implements ActivityService {
 		List<ActivityDto> activitiesList = activityRepository.findByCityIgnoreCaseOrderByName(city);
 		return convertIntegrationToBusinessList(activitiesList);
 	}
+	
+	@Override
+	public List<Activity> getByCountry(String country) {
+		List<ActivityDto> activitiesList = activityRepository.findByCountryIgnoreCaseOrderByName(country);
+		return convertIntegrationToBusinessList(activitiesList);
+	}
 
 	@Override
 	public List<Activity> getByPriceBetween(double min, double max) {

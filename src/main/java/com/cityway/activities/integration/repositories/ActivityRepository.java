@@ -19,6 +19,7 @@ public interface ActivityRepository extends MongoRepository<ActivityDto, String>
 	List<ActivityDto> findByNameContainingIgnoreCase(String name);
 	List<ActivityDto> findByCategoryOrderByName(CategoryDto category);
 	List<ActivityDto> findByCityIgnoreCaseOrderByName(String city);
+	List<ActivityDto> findByCountryIgnoreCaseOrderByName(String country);
 	List<ActivityDto> findByPriceBetween(double min, double max);
 	List<ActivityDto> findByAdminPetsTrueOrderByName();
 	List<ActivityDto> findByWheelchairAccessibleTrueOrderByName();

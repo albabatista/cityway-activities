@@ -22,6 +22,7 @@ public interface ActivityService {
 	List<Activity> getByNameContaining(String name);
 	List<Activity> getByCategory(Category category);
 	List<Activity> getByCity(String city);
+	List<Activity> getByCountry(String country);
 	List<Activity> getByPriceBetween(double min, double max);
 	List<Activity> getByAdminPetsTrue();
 	List<Activity> getByWheelchairAccessibleTrue();

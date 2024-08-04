@@ -43,6 +43,7 @@ public class ActivityController {
 	@ApiResponse(responseCode = "200", description= "Successfully retrieved", content = { @Content(schema = @Schema(implementation = Activity.class), mediaType = "application/json") })
 	@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = { @Content(schema = @Schema()) })
 	public ResponseEntity<?> get( @RequestParam (required = false) String city,
+									 @RequestParam (required = false) String country,
 									 @RequestParam (required = false) Category category,
 									 @RequestParam (required = false) String name,
 									 @RequestParam (required = false) String language,
@@ -59,6 +60,9 @@ public class ActivityController {
 		
 		}else if (category != null) {
 			listActivities = activityService.getByCategory(category);
+		
+		}else if (country != null) {
+			listActivities = activityService.getByCountry(country);
 		
 		}else if (name != null) {
 			listActivities = activityService.getByNameContaining(name);
