@@ -167,7 +167,7 @@ public class ActivityController {
 	}
 	
 	private List<Activity> addingSelfReferences(List<Activity> activities) {
-		return activities.stream().map(x -> addSelfLink(x)).toList();	
+		return activities.stream().map(this::addSelfLink).toList();	
 
 	}
 
