@@ -23,6 +23,9 @@
 		<jacoco-plugin.version>0.8.11</jacoco-plugin.version>
 		<open-api-ui.version>2.3.0</open-api-ui.version>
 		<apache.commons.version>3.15.0</apache.commons.version>
+		<spring-cloud-starter-aws.version>2.2.6.RELEASE</spring-cloud-starter-aws.version>
+		<aws-java-sdk-s3.version>1.12.667</aws-java-sdk-s3.version>
+		<jaxb-api.version>2.4.0-b180830.0359</jaxb-api.version>
 	</properties>
 	<dependencies>
 
@@ -117,6 +120,28 @@
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-hateoas</artifactId>
 		</dependency>
+		
+		<!-- Starter AWS -->
+		<dependency>
+		   <groupId>org.springframework.cloud</groupId>
+		   <artifactId>spring-cloud-starter-aws</artifactId>
+		   <version>${spring-cloud-starter-aws.version}</version>
+		</dependency>
+
+		<!-- AWS S3 -->
+		<dependency>
+		    <groupId>com.amazonaws</groupId>
+		    <artifactId>aws-java-sdk-s3</artifactId>
+		    <version>${aws-java-sdk-s3.version}</version>
+		</dependency>
+		
+		<!-- Jaxb-Api (needed to proccess files) -->
+		<dependency>
+		   <groupId>javax.xml.bind</groupId>
+		   <artifactId>jaxb-api</artifactId>
+		   <version>${jaxb-api.version}</version>
+		</dependency>
+
 
 	</dependencies>
 

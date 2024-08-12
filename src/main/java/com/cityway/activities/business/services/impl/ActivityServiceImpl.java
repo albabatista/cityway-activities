@@ -1,14 +1,22 @@
 package com.cityway.activities.business.services.impl;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import org.apache.commons.lang.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.cityway.activities.business.models.Activity;
 import com.cityway.activities.business.models.Category;
 import com.cityway.activities.business.services.ActivityService;
@@ -17,8 +25,13 @@ import com.cityway.activities.integration.mappers.CategoryMapper;
 import com.cityway.activities.integration.models.ActivityDto;
 import com.cityway.activities.integration.models.CategoryDto;
 import com.cityway.activities.integration.repositories.ActivityRepository;
+import com.cityway.activities.presentation.exceptions.ActivityBadRequestException;
 import com.cityway.activities.presentation.exceptions.ActivityNotFoundException;
+import com.cityway.activities.presentation.exceptions.ActivityServiceUnavailableException;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class ActivityServiceImpl implements ActivityService {
 
@@ -30,11 +43,23 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Autowired
 	private CategoryMapper categoryMapper;
+
+	@Autowired
+	private AmazonS3 amazonS3Client;
+
+	@Value("${cloud.aws.s3.bucket-name}")
+	private String awsS3BucketName;
 	
+	@Value("${cloud.aws.s3.images-folder}")
+	private String awsS3ImagesFolder;
+	
+	@Value("${cloud.aws.s3.bucket-endpoint}")
+	private String awsS3BucketEndpoint;
+
 	@Override
 	public void create(Activity activity) {
-		if (activity == null) {
-			throw new IllegalArgumentException("Cannot save the activity because is null");
+		if (null == activity) {
+			throw new ActivityBadRequestException("Cannot save the activity because is null");
 		}
 
 		ActivityDto activityDto = capitalizeFields(activityMapper.activityToDto(activity));
@@ -50,8 +75,8 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Override
 	public void update(Activity activity) {
-		if (activity == null) {
-			throw new IllegalArgumentException("Cannot save the activity because is null");
+		if (null == activity) {
+			throw new ActivityBadRequestException("Cannot save the activity because is null");
 
 		} else if (!activityRepository.existsById(activity.getId())) {
 			throw new ActivityNotFoundException(activity.getId());
@@ -63,14 +88,41 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Override
 	public void delete(String id) {
+		if (!activityRepository.existsById(id)) {
+			throw new ActivityNotFoundException(id);
+		}
 		activityRepository.deleteById(id);
 	}
 
 	@Override
 	public void delete(Activity activity) {
+
+		if (null == activity) {
+			throw new ActivityBadRequestException("Cannot delete the activity because is null");
+
+		} else if (!activityRepository.existsById(activity.getId())) {
+			throw new ActivityNotFoundException(activity.getId());
+		}
+
 		ActivityDto activityDto = activityMapper.activityToDto(activity);
 		activityRepository.delete(activityDto);
 	}
+
+	
+	
+
+	@Override
+	public void uploadImage(String id, MultipartFile image) {
+
+		Activity activity = read(id);
+
+		if (null == activity) throw new ActivityNotFoundException(id);
+
+		File imageToUpload = convertMultiPartToFile(image);
+		uploadImageToS3(activity, imageToUpload);	
+	}
+	
+	
 
 	@Override
 	public List<Activity> getAll() {
@@ -96,7 +148,7 @@ public class ActivityServiceImpl implements ActivityService {
 		List<ActivityDto> activitiesList = activityRepository.findByCityIgnoreCaseOrderByName(city);
 		return convertIntegrationToBusinessList(activitiesList);
 	}
-	
+
 	@Override
 	public List<Activity> getByCountry(String country) {
 		List<ActivityDto> activitiesList = activityRepository.findByCountryIgnoreCaseOrderByName(country);
@@ -148,15 +200,52 @@ public class ActivityServiceImpl implements ActivityService {
 		activityDto.setCity(WordUtils.capitalizeFully(activityDto.getCity()).trim());
 		activityDto.setCountry(WordUtils.capitalizeFully(activityDto.getCountry()).trim());
 		activityDto.setLocation(WordUtils.capitalizeFully(activityDto.getLocation().trim()));
-		
-		Set<String> languages = Set.copyOf(
-				activityDto.getLanguages().stream()
-				.map(WordUtils::capitalizeFully)
-				.map(String::trim)
-				.toList());
+
+		Set<String> languages = Set
+				.copyOf(activityDto.getLanguages().stream().map(WordUtils::capitalizeFully).map(String::trim).toList());
 		activityDto.setLanguages(languages);
-		
+
 		return activityDto;
+	}
+	
+	private File convertMultiPartToFile(MultipartFile multipartFile) {
+		final File file = new File(multipartFile.getOriginalFilename());
+
+		try (final FileOutputStream outputStream = new FileOutputStream(file)) {
+			outputStream.write(multipartFile.getBytes());
+			return file;
+
+		} catch (final IOException ex) {
+			throw new ActivityBadRequestException(
+					"Error converting the multi-part file to file, cause: {}" + ex.getMessage());
+
+		}
+	}
+	
+
+	private void uploadImageToS3(Activity activity, File image) {
+		final String key = awsS3ImagesFolder + image.getName().toLowerCase().trim();
+		final PutObjectRequest putObjectRequest = new PutObjectRequest(awsS3BucketName, key, image);
+
+		try {			
+			
+			//Upload to AWS S3
+			amazonS3Client.putObject(putObjectRequest);
+			
+			/// Save URL
+			final String imageUrl =  String.format("%s/%s", awsS3BucketEndpoint , key);
+			activity.getImages().add(imageUrl);
+			activityRepository.save(activityMapper.activityToDto(activity));
+			log.info("Image uploaded to AWS S3 sucessfully: {} and added to the activity with id: {}", imageUrl, activity.getId());
+
+		} catch (final AmazonServiceException ex) {
+			throw new ActivityServiceUnavailableException(
+					"Error while uploading file to AWS S3, cause: " + ex.getMessage());
+
+		} finally {
+			image.deleteOnExit();
+		}
+
 	}
 
 }

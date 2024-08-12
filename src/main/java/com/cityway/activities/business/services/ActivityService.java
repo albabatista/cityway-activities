@@ -3,6 +3,8 @@ package com.cityway.activities.business.services;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.cityway.activities.business.models.Activity;
 import com.cityway.activities.business.models.Category;
 
@@ -17,6 +19,8 @@ public interface ActivityService {
 	void update (Activity activity);
 	void delete (String id);
 	void delete (Activity activity);
+	
+	void uploadImage(String id, MultipartFile image);
 	
 	List<Activity> getAll();
 	List<Activity> getByNameContaining(String name);

@@ -30,12 +30,14 @@ public class ActivityDto {
 	private double price;
 
 	private String city;
-	
+
 	private String country;
 
 	private String location;
 
 	private Set<String> languages;
+
+	private Set<String> images;
 
 	private Set<Map<String, Set<String>>> datesAvailables;
 

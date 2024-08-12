@@ -6,6 +6,8 @@ import java.util.Set;
 
 import org.springframework.hateoas.RepresentationModel;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -15,6 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
+@JsonIgnoreProperties(value = "_links")
 public class Activity extends RepresentationModel<Activity> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -23,33 +26,36 @@ public class Activity extends RepresentationModel<Activity> implements Serializa
 	private String id;
 
 	@NotBlank
-	@Schema(example = "Mont Saint Michel Day Trip")
+	@Schema(example = "Cappadocia Hot Air Balloon Ride")
 	private String name;
 
 	@NotBlank
-	@Schema(example = "DAY_TRIP")
+	@Schema(example = "ADVENTURE")
 	private Category category;
 
-	@Schema(example = "Set off on a full-day trip to Mont Saint Michel from Paris.")
+	@Schema(example = "When you think of Cappadocia, the image that comes to mind is hundreds of colourful hot air balloons flying over spectacular natural landscapes. Witness the incredible sight for yourself!")
 	private String description;
 
-	@Schema(example = "159", defaultValue = "0")
+	@Schema(example = "180", defaultValue = "0")
 	private double price;
 
 	@NotBlank
-	@Schema(example = "Paris")
+	@Schema(example = "Cappadocia")
 	private String city;
-	
+
 	@NotBlank
-	@Schema(example = "France")
+	@Schema(example = "Turkey")
 	private String country;
 
-	@Schema(example = "Pullman Paris Tour Eiffel Hotel")
+	@Schema(example = "Sightseeing, Balloon Flight, Sunrise")
 	private String location;
 
 	@NotBlank
-	@Schema(example = "[\"English\", \"Spanish\", \"Italian\", \"German\"]")
+	@Schema(example = "[\"English\", \"Spanish\"]")
 	private Set<String> languages;
+
+	@Schema(description = "Url of images uploaded in AWS S3", example = "[\"https://cityway.s3.eu-north-1.amazonaws.com/images/main.png\"]")
+	private Set<String> images;
 
 	@NotBlank
 	@Schema(example = """
