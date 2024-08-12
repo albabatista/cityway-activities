@@ -54,7 +54,7 @@ public class Activity extends RepresentationModel<Activity> implements Serializa
 	@Schema(example = "[\"English\", \"Spanish\"]")
 	private Set<String> languages;
 
-	@Schema(description = "Url of images uploaded in AWS S3", example = "[\"https://cityway.s3.eu-north-1.amazonaws.com/images/main.png\"]")
+	@Schema(description = "Url of images uploaded in AWS S3", example = "[\"https://cityway.s3.eu-north-1.amazonaws.com/images/capadocia.png\"]")
 	private Set<String> images;
 
 	@NotBlank
