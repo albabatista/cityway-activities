@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: activities-microservice
+  
+  data:
+    mongodb:
+      database: activitiesdb
+      host: localhost
+      port: '27017'
+      uri: mongodb://${spring.data.mongodb.host}:${spring.data.mongodb.port}/${spring.data.mongodb.database}
+  
+  cloud:
+    config:
+      profile: dev
+
+server:
+  port: '8080'
+
+eureka:
+  instance:
+    instance-id: '${spring.application.name}:${random.uuid}'
+
+cloud:
+  aws:
+    s3:
+      bucket-name: cityway
+      images-folder: images/
+      bucket-endpoint: https://${cloud.aws.s3.bucket-name}.s3.${cloud.aws.region.static}.amazonaws.com
+    region:
+      static: eu-north-1

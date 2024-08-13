@@ -1,0 +1,24 @@
+spring:
+  cloud:
+    config:
+      uri: 'http://localhost:8888'
+    
+    vault:
+      scheme: http
+      host: localhost
+      port: '8200'
+      uri: '${spring.cloud.vault.scheme}://${spring.cloud.vault.host}:${spring.cloud.vault.port}'
+      authentication: TOKEN
+      token: hvs.GdStIBkn7kFG6S75oQwO96LJ
+      kv:
+        backend: secret
+      application-name: cityway-activities-microservice   
+    
+  profiles:
+    active: vault
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
