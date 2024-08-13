@@ -107,41 +107,52 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
-		
+
 		<!-- Commons (provides the class Word Utils) -->
-		<dependency>  
-		    <groupId>org.apache.commons</groupId>  
-		    <artifactId>commons-lang3</artifactId>  
-		    <version>${apache.commons.version}</version>  
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${apache.commons.version}</version>
 		</dependency>
-		
+
 		<!-- Starter HATEOAS -->
 		<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-hateoas</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-hateoas</artifactId>
 		</dependency>
-		
+
 		<!-- Starter AWS -->
 		<dependency>
-		   <groupId>org.springframework.cloud</groupId>
-		   <artifactId>spring-cloud-starter-aws</artifactId>
-		   <version>${spring-cloud-starter-aws.version}</version>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-aws</artifactId>
+			<version>${spring-cloud-starter-aws.version}</version>
 		</dependency>
 
 		<!-- AWS S3 -->
 		<dependency>
-		    <groupId>com.amazonaws</groupId>
-		    <artifactId>aws-java-sdk-s3</artifactId>
-		    <version>${aws-java-sdk-s3.version}</version>
-		</dependency>
-		
-		<!-- Jaxb-Api (needed to proccess files) -->
-		<dependency>
-		   <groupId>javax.xml.bind</groupId>
-		   <artifactId>jaxb-api</artifactId>
-		   <version>${jaxb-api.version}</version>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-s3</artifactId>
+			<version>${aws-java-sdk-s3.version}</version>
 		</dependency>
 
+		<!-- Jaxb-Api (needed to proccess files) -->
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>${jaxb-api.version}</version>
+		</dependency>
+
+		<!-- Vault (to access to secrets) -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-vault-config</artifactId>
+		</dependency>
+
+		<!-- Starter Validation -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
 
 	</dependencies>
 
@@ -231,9 +242,12 @@
 						<exclude>com/cityway/activities/*.class</exclude>
 						<exclude>com/cityway/activities/config/*.class</exclude>
 						<exclude>com/cityway/activities/business/models/*.class</exclude>
-						<exclude>com/cityway/activities/integration/models/*.class</exclude>
-						<exclude>com/cityway/activities/integration/mappers/*.class</exclude>
-						<exclude>com/cityway/activities/presentation/exceptions/*.class</exclude>
+						<exclude>
+							com/cityway/activities/integration/models/*.class</exclude>
+						<exclude>
+							com/cityway/activities/integration/mappers/*.class</exclude>
+						<exclude>
+							com/cityway/activities/presentation/exceptions/*.class</exclude>
 					</excludes>
 				</configuration>
 			</plugin>
