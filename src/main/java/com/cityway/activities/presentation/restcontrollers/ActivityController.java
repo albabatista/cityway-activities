@@ -145,7 +145,7 @@ public class ActivityController {
 	}
 	
 	@PatchMapping("/{id}/{imageName}")
-	@Operation(summary = "Update the image of the activity, whose id is passed as parameter", description = "Returns the activity updated")
+	@Operation(summary = "Update the image of the activity, with one of the images are uploaded in the gallery. It needs the activity id and the name of the image", description = "Returns the activity updated")
 	@ApiResponse(responseCode = "200", description = "Successfully updated", content = {
 			@Content(schema = @Schema(implementation = Activity.class), mediaType = "application/json") })
 	@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = {
