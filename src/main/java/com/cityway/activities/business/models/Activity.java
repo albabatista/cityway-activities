@@ -1,6 +1,7 @@
 package com.cityway.activities.business.models;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -12,10 +13,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @JsonIgnoreProperties(value = "_links")
 public class Activity extends RepresentationModel<Activity> implements Serializable {
@@ -82,5 +81,10 @@ public class Activity extends RepresentationModel<Activity> implements Serializa
 
 	@Schema(example = "false", defaultValue = "false")
 	private boolean wheelchairAccessible;
+
+	
+	public Activity() {
+		this.imagesGallery = new HashSet<>();
+	}
 
 }

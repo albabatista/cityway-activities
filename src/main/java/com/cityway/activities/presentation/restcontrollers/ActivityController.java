@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -143,6 +144,16 @@ public class ActivityController {
 		return ResponseEntity.ok(activity);
 	}
 	
+	@PatchMapping("/{id}/{imageUrl}")
+	@Operation(summary = "Update the image of the activity, whose id is passed as parameter", description = "Returns the activity updated")
+	@ApiResponse(responseCode = "200", description = "Successfully updated", content = {
+			@Content(schema = @Schema(implementation = Activity.class), mediaType = "application/json") })
+	@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = {
+			@Content(schema = @Schema()) })
+	public ResponseEntity<?> updateImage(@PathVariable String id, @PathVariable String imageUrl) {
+		activityService.updateImage(id, imageUrl);
+		return this.getById(id);
+	}
 
 	private ResponseEntity<?> getResponse(List<Activity> list) {
 		return list.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(addingSelfReferences(list));

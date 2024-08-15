@@ -9,7 +9,7 @@ spring:
       port: '8200'
       uri: '${spring.cloud.vault.scheme}://${spring.cloud.vault.host}:${spring.cloud.vault.port}'
       authentication: TOKEN
-      token: hvs.GdStIBkn7kFG6S75oQwO96LJ
+      token: hvs.g0QyAvhOBaaQvJ1wP7xk2Wuf
       kv:
         backend: secret
       application-name: cityway-activities-microservice   

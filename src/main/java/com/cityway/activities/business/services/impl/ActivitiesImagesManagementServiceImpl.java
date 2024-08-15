@@ -56,27 +56,15 @@ public class ActivitiesImagesManagementServiceImpl implements ActivitiesImagesMa
 	
 
 	@Override
-	public void removeImage(String id) {
+	public void deleteImage(String id, String imageName) {
 		Activity activity = activityService.read(id);
 		
 		if (null == activity)
 			throw new ActivityNotFoundException(id);
-		deleteImageFromS3(activity);	
-	}
-
-
-	@Override
-	public void uploadImagesToGallery(String id, MultipartFile[] images) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void removeImagesFromGallery(String id) {
-		// TODO Auto-generated method stub
-
+		deleteImageFromS3(activity, imageName);	
 	}
 	
+
 	
 	// ***************************************************************
 	//
@@ -100,9 +88,10 @@ public class ActivitiesImagesManagementServiceImpl implements ActivitiesImagesMa
 	
 
 	private void uploadImageToS3(Activity activity, File image) {
-		final String key = String.format("%s%s/%s",
+		final String key = String.format("%s%s/%s/%s",
 				awsS3ImagesFolder, 
 				activity.getCity().toLowerCase(), 
+				activity.getName().toLowerCase(),
 				image.getName().toLowerCase().trim());
 		
 		final PutObjectRequest putObjectRequest = new PutObjectRequest(awsS3BucketName, key, image);
@@ -124,24 +113,22 @@ public class ActivitiesImagesManagementServiceImpl implements ActivitiesImagesMa
 	private void saveImage(String key, Activity activity) {
 
 		final String imageUrl = String.format("%s/%s", awsS3BucketEndpoint, key);
-
-		activity.setImage(imageUrl);
-		log.info("Image uploaded to AWS S3 sucessfully: {} and changed to the activity with id: {}", imageUrl,
+		
+		activity.getImagesGallery().add(imageUrl);
+		
+		log.info("Image uploaded sucessfully: {} and added to the activity with id: {}", imageUrl,
 				activity.getId());
 		
 		activityService.update(activity);
 	}
 	
-	private void deleteImageFromS3(Activity activity) {
-		final String key = String.format("%s%s%s",
-				awsS3ImagesFolder, 
-				activity.getCity().toLowerCase(), 
-				activity.getImage().substring(activity.getImage().lastIndexOf("/")));
+	private void deleteImageFromS3(Activity activity, String imageUrl) {
+		final String key = imageUrl.substring(imageUrl.indexOf(awsS3ImagesFolder));
 		final DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(awsS3BucketName, key);
 		
 		try {
 			amazonS3Client.deleteObject(deleteObjectRequest);
-			activity.setImage(null);
+			activity.getImagesGallery().removeIf(x -> x.contains(key));
 			activityService.update(activity);
 			
 			log.info("Image deleted with key: {} from AWS S3 sucessfully and removed from the activity with id: {}",key,

@@ -83,6 +83,21 @@ public class ActivityServiceImpl implements ActivityService {
 		ActivityDto activityDto = activityMapper.activityToDto(activity);
 		activityRepository.delete(activityDto);
 	}
+	
+
+	@Override
+	public void updateImage(String id, String imageUrl) {
+		if (null == imageUrl || imageUrl.isBlank()) {
+			throw new ActivityBadRequestException("Cannot update the activity image because the url is invalid");
+		
+		} else if (!activityRepository.existsById(id)) {
+			throw new ActivityNotFoundException(id);
+		}
+		
+		Activity activity = read(id);
+		activity.setImage(imageUrl);
+		update(activity);
+	}
 
 	@Override
 	public List<Activity> getAll() {
