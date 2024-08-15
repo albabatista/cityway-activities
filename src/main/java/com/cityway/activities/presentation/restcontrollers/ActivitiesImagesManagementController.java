@@ -29,7 +29,7 @@ public class ActivitiesImagesManagementController {
 	@Autowired
 	private ActivitiesImagesManagementService activitiesImagesManagementService;
 
-	@Operation(summary = "Uploads a new main image to the activity", description = "Returns the url to the image")
+	@Operation(summary = "Uploads a new image to the activity images gallery", description = "Returns the url to the image")
 	@ApiResponse(responseCode = "200", description = "Successfully uploaded", content = {
 			@Content(schema = @Schema(implementation = Activity.class), mediaType = "application/json") })
 	@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = {
@@ -40,7 +40,7 @@ public class ActivitiesImagesManagementController {
 	}
 	
 	
-	@Operation(summary = "Delete the image of the activity passed as parameter")
+	@Operation(summary = "Delete the image of the activity images gallery")
 	@ApiResponse(responseCode = "204", description = "Successfully deleted", content = { @Content(schema = @Schema()) })
 	@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = {
 			@Content(schema = @Schema()) })
