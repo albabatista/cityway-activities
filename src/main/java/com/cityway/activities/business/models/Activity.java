@@ -14,7 +14,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "id", callSuper = false)
 public class Activity extends RepresentationModel<Activity> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
