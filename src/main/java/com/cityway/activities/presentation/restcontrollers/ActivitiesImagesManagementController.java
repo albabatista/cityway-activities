@@ -1,5 +1,6 @@
 package com.cityway.activities.presentation.restcontrollers;
 
+import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,13 +31,14 @@ public class ActivitiesImagesManagementController {
 	private ActivitiesImagesManagementService activitiesImagesManagementService;
 
 	@Operation(summary = "Uploads a new image to the activity images gallery", description = "Returns the url to the image")
-	@ApiResponse(responseCode = "200", description = "Successfully uploaded", content = {
-			@Content(schema = @Schema(implementation = Activity.class), mediaType = "application/json") })
+	@ApiResponse(responseCode = "200", description = "Successfully uploaded" , content = {
+			@Content(schema = @Schema(), mediaType = "application/json") })
 	@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = {
 			@Content(schema = @Schema()) })
 	@PostMapping(path = "/{id}", consumes = "multipart/form-data")
 	public ResponseEntity<?> uploadImage(@PathVariable String id, @RequestPart("image") MultipartFile imageFile) {
-		return ResponseEntity.ok(activitiesImagesManagementService.uploadImage(id, imageFile));
+		String imageUrl = activitiesImagesManagementService.uploadImage(id, imageFile);
+		return ResponseEntity.status(HttpStatus.SC_CREATED).body(imageUrl);
 	}
 	
 	
