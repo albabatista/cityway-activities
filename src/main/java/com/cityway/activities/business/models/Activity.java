@@ -5,9 +5,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.hateoas.Links;
 import org.springframework.hateoas.RepresentationModel;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -16,7 +15,6 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(of = "id")
-@JsonIgnoreProperties(value = "_links")
 public class Activity extends RepresentationModel<Activity> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -52,7 +50,7 @@ public class Activity extends RepresentationModel<Activity> implements Serializa
 	@NotBlank
 	@Schema(example = "[\"English\", \"Spanish\"]")
 	private Set<String> languages;
-	
+
 	@Schema(description = "Url of the main image", example = "https://cityway.s3.eu-north-1.amazonaws.com/images/capadocia.png")
 	private String image;
 
@@ -82,9 +80,14 @@ public class Activity extends RepresentationModel<Activity> implements Serializa
 	@Schema(example = "false", defaultValue = "false")
 	private boolean wheelchairAccessible;
 
-	
 	public Activity() {
 		this.imagesGallery = new HashSet<>();
+	}
+
+	@Schema(hidden = true)
+	@Override
+	public Links getLinks() {
+		return super.getLinks();
 	}
 
 }
