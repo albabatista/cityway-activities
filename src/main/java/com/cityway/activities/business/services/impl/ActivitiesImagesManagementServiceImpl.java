@@ -25,10 +25,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class ActivitiesImagesManagementServiceImpl implements ActivitiesImagesManagementService {
-	
+
 	@Autowired
 	ActivityService activityService;
-	
+
 	@Autowired
 	private AmazonS3 amazonS3Client;
 
@@ -44,7 +44,7 @@ public class ActivitiesImagesManagementServiceImpl implements ActivitiesImagesMa
 	@Override
 	public String uploadImage(String id, MultipartFile image) {
 		Activity activity = activityService.read(id);
-		
+
 		if (null == activity)
 			throw new ActivityNotFoundException(id);
 
@@ -52,26 +52,22 @@ public class ActivitiesImagesManagementServiceImpl implements ActivitiesImagesMa
 		uploadImageToS3(activity, imageToUpload);
 		return activity.getImage();
 	}
-	
-	
 
 	@Override
 	public void deleteImage(String id, String imageName) {
 		Activity activity = activityService.read(id);
-		
+
 		if (null == activity)
 			throw new ActivityNotFoundException(id);
-		deleteImageFromS3(activity, imageName);	
+		deleteImageFromS3(activity, imageName);
 	}
-	
 
-	
 	// ***************************************************************
 	//
 	// PRIVATE METHODS
 	//
 	// ***************************************************************
-	
+
 	private File convertMultiPartToFile(MultipartFile multipartFile) {
 		final File file = new File(multipartFile.getOriginalFilename());
 
@@ -85,15 +81,11 @@ public class ActivitiesImagesManagementServiceImpl implements ActivitiesImagesMa
 
 		}
 	}
-	
 
 	private void uploadImageToS3(Activity activity, File image) {
-		final String key = String.format("%s%s/%s/%s",
-				awsS3ImagesFolder, 
-				activity.getCity().toLowerCase(), 
-				activity.getName().toLowerCase(),
-				image.getName().toLowerCase().trim());
-		
+		final String key = String.format("%s%s/%s/%s", awsS3ImagesFolder, activity.getCity().toLowerCase(),
+				activity.getName().toLowerCase(), image.getName().toLowerCase().trim());
+
 		final PutObjectRequest putObjectRequest = new PutObjectRequest(awsS3BucketName, key, image);
 
 		try {
@@ -113,32 +105,36 @@ public class ActivitiesImagesManagementServiceImpl implements ActivitiesImagesMa
 	private void saveImage(String key, Activity activity) {
 
 		final String imageUrl = String.format("%s/%s", awsS3BucketEndpoint, key);
-		
+
 		activity.getImagesGallery().add(imageUrl);
-		
-		log.info("Image uploaded sucessfully: {} and added to the activity with id: {}", imageUrl,
-				activity.getId());
-		
+
+		log.info("Image uploaded sucessfully: {} and added to the activity with id: {}", imageUrl, activity.getId());
+
 		activityService.update(activity);
 	}
-	
-	private void deleteImageFromS3(Activity activity, String imageUrl) {
+
+	private void deleteImageFromS3(Activity activity, String imageName) {
+
+		String imageUrl = activity.getImagesGallery().stream().filter(a -> a.contains(imageName.toLowerCase().trim()))
+				.findFirst().get();
+
 		final String key = imageUrl.substring(imageUrl.indexOf(awsS3ImagesFolder));
+
 		final DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(awsS3BucketName, key);
-		
+
 		try {
 			amazonS3Client.deleteObject(deleteObjectRequest);
 			activity.getImagesGallery().removeIf(x -> x.contains(key));
 			activityService.update(activity);
-			
-			log.info("Image deleted with key: {} from AWS S3 sucessfully and removed from the activity with id: {}",key,
-					activity.getId());
+
+			log.info("Image deleted with key: {} from AWS S3 sucessfully and removed from the activity with id: {}",
+					key, activity.getId());
 
 		} catch (final AmazonServiceException ex) {
 			throw new ActivityServiceUnavailableException(
 					"Error while deleting file to AWS S3, cause: " + ex.getMessage());
 
-		} 
+		}
 	}
 
 }

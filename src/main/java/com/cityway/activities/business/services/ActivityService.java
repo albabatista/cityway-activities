@@ -18,7 +18,7 @@ public interface ActivityService {
 	void delete (String id);
 	void delete (Activity activity);
 	
-	void updateImage(String id, String imageUrl);
+	void updateImage(String id, String imageName);
 	
 	List<Activity> getAll();
 	List<Activity> getByNameContaining(String name);

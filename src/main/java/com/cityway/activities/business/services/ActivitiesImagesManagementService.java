@@ -6,5 +6,5 @@ import org.springframework.web.multipart.MultipartFile;
 public interface ActivitiesImagesManagementService {
 
 	String uploadImage(String id, MultipartFile image);
-	void deleteImage(String id, String image);
+	void deleteImage(String id, String imageName);
 }

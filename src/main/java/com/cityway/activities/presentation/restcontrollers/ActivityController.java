@@ -144,14 +144,14 @@ public class ActivityController {
 		return ResponseEntity.ok(activity);
 	}
 	
-	@PatchMapping("/{id}/{imageUrl}")
+	@PatchMapping("/{id}/{imageName}")
 	@Operation(summary = "Update the image of the activity, whose id is passed as parameter", description = "Returns the activity updated")
 	@ApiResponse(responseCode = "200", description = "Successfully updated", content = {
 			@Content(schema = @Schema(implementation = Activity.class), mediaType = "application/json") })
 	@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = {
 			@Content(schema = @Schema()) })
-	public ResponseEntity<?> updateImage(@PathVariable String id, @PathVariable String imageUrl) {
-		activityService.updateImage(id, imageUrl);
+	public ResponseEntity<?> updateImage(@PathVariable String id, @PathVariable String imageName) {
+		activityService.updateImage(id, imageName);
 		return this.getById(id);
 	}
 

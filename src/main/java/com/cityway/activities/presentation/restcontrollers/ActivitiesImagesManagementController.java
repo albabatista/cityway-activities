@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,9 +44,9 @@ public class ActivitiesImagesManagementController {
 	@ApiResponse(responseCode = "204", description = "Successfully deleted", content = { @Content(schema = @Schema()) })
 	@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = {
 			@Content(schema = @Schema()) })
-	@DeleteMapping("/{id}/{imageUrl}")
-	public ResponseEntity<?> deleteImage(@PathVariable String id, @PathVariable String imageUrl) {
-		activitiesImagesManagementService.deleteImage(id, imageUrl);
+	@DeleteMapping("/{id}/{imageName}")
+	public ResponseEntity<?> deleteImage(@PathVariable String id, @PathVariable String imageName) {
+		activitiesImagesManagementService.deleteImage(id, imageName);
 		return ResponseEntity.noContent().build();
 	}
 }
