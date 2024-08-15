@@ -115,7 +115,7 @@ public class ActivityController {
 
 	}
 
-	@Operation(summary = "Uploads a new image to the activity", description = "Returns the activity")
+	@Operation(summary = "Uploads a new main image to the activity", description = "Returns the activity")
 	@ApiResponse(responseCode = "200", description = "Successfully uploaded", content = {
 			@Content(schema = @Schema(implementation = Activity.class), mediaType = "application/json") })
 	@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = {

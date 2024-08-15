@@ -49,10 +49,10 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Value("${cloud.aws.s3.bucket-name}")
 	private String awsS3BucketName;
-	
+
 	@Value("${cloud.aws.s3.images-folder}")
 	private String awsS3ImagesFolder;
-	
+
 	@Value("${cloud.aws.s3.bucket-endpoint}")
 	private String awsS3BucketEndpoint;
 
@@ -108,21 +108,21 @@ public class ActivityServiceImpl implements ActivityService {
 		activityRepository.delete(activityDto);
 	}
 
-	
-	
-
 	@Override
 	public void uploadImage(String id, MultipartFile image) {
-
 		Activity activity = read(id);
-
-		if (null == activity) throw new ActivityNotFoundException(id);
+		if (null == activity)
+			throw new ActivityNotFoundException(id);
 
 		File imageToUpload = convertMultiPartToFile(image);
-		uploadImageToS3(activity, imageToUpload);	
+		uploadImageToS3(activity, imageToUpload);
 	}
-	
-	
+
+	@Override
+	public void uploadImagesToGallery(String id, MultipartFile[] images) {
+		// TODO Auto-generated method stub
+
+	}
 
 	@Override
 	public List<Activity> getAll() {
@@ -207,7 +207,7 @@ public class ActivityServiceImpl implements ActivityService {
 
 		return activityDto;
 	}
-	
+
 	private File convertMultiPartToFile(MultipartFile multipartFile) {
 		final File file = new File(multipartFile.getOriginalFilename());
 
@@ -221,30 +221,43 @@ public class ActivityServiceImpl implements ActivityService {
 
 		}
 	}
-	
 
 	private void uploadImageToS3(Activity activity, File image) {
-		final String key = awsS3ImagesFolder + image.getName().toLowerCase().trim();
+		final String key = String.format("%s%s/%s",
+				awsS3ImagesFolder, 
+				activity.getCity().toLowerCase(), 
+				image.getName().toLowerCase().trim());
+		
 		final PutObjectRequest putObjectRequest = new PutObjectRequest(awsS3BucketName, key, image);
 
-		try {			
-			
-			//Upload to AWS S3
+		try {
 			amazonS3Client.putObject(putObjectRequest);
-			
-			/// Save URL
-			final String imageUrl =  String.format("%s/%s", awsS3BucketEndpoint , key);
-			activity.getImages().add(imageUrl);
-			activityRepository.save(activityMapper.activityToDto(activity));
-			log.info("Image uploaded to AWS S3 sucessfully: {} and added to the activity with id: {}", imageUrl, activity.getId());
+			saveImage(key, activity);
 
 		} catch (final AmazonServiceException ex) {
 			throw new ActivityServiceUnavailableException(
 					"Error while uploading file to AWS S3, cause: " + ex.getMessage());
 
 		} finally {
-			image.deleteOnExit();
+			image.delete();
 		}
+
+	}
+
+	private void saveImage(String key, Activity activity) {
+
+		final String imageUrl = String.format("%s/%s", awsS3BucketEndpoint, key);
+
+		activity.setImage(imageUrl);
+		log.info("Image uploaded to AWS S3 sucessfully: {} and changed to the activity with id: {}", imageUrl,
+				activity.getId());
+
+		/*
+		 * TODO activity.getImagesGallery().add(imageUrl); log.
+		 * info("Image uploaded to AWS S3 sucessfully: {} and added to the activity with id: {}"
+		 * , imageUrl, activity.getId());
+		 */
+		activityRepository.save(activityMapper.activityToDto(activity));
 
 	}
 

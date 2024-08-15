@@ -21,6 +21,7 @@ public interface ActivityService {
 	void delete (Activity activity);
 	
 	void uploadImage(String id, MultipartFile image);
+	void uploadImagesToGallery(String id, MultipartFile[] images);
 	
 	List<Activity> getAll();
 	List<Activity> getByNameContaining(String name);

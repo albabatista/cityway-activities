@@ -36,8 +36,10 @@ public class ActivityDto {
 	private String location;
 
 	private Set<String> languages;
+	
+	private String image;
 
-	private Set<String> images;
+	private Set<String> imagesGallery;
 
 	private Set<Map<String, Set<String>>> datesAvailables;
 
