@@ -84,7 +84,7 @@ public class Activity extends RepresentationModel<Activity> implements Serializa
 		this.imagesGallery = new HashSet<>();
 	}
 
-	@Schema(hidden = true)
+	@Schema (description = "HATEOAS self link",example = "{\"self\": {\"href\": \"http://localhost:8080/activities/6571f425f55ae713957d8454\"}}")
 	@Override
 	public Links getLinks() {
 		return super.getLinks();
