@@ -28,6 +28,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -41,10 +42,12 @@ public class ActivityController {
 
 	@GetMapping
 	@Operation(summary = "Get the activities", description = "Returns the activities")
-	@ApiResponse(responseCode = "200", description = "Successfully retrieved", content = {
-			@Content(schema = @Schema(implementation = Activity.class), mediaType = "application/json") })
-	@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = {
-			@Content(schema = @Schema()) })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Successfully retrieved", content = {
+					@Content(schema = @Schema(implementation = Activity.class), mediaType = "application/json") }),
+
+			@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = {
+					@Content(schema = @Schema()) }) })
 	public ResponseEntity<?> get(@RequestParam(required = false) String city,
 			@RequestParam(required = false) String country, @RequestParam(required = false) Category category,
 			@RequestParam(required = false) String name, @RequestParam(required = false) String language,
@@ -85,12 +88,13 @@ public class ActivityController {
 		return getResponse(listActivities);
 	}
 
-	@Operation(summary = "Get an activity as per the id", description = "Returns an activity as per the id")
-	@ApiResponse(responseCode = "200", description = "Successfully retrieved", content = {
-			@Content(schema = @Schema(implementation = Activity.class), mediaType = "application/json") })
-	@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = {
-			@Content(schema = @Schema()) })
 	@GetMapping("/{id}")
+	@Operation(summary = "Get an activity as per the id", description = "Returns an activity as per the id")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Successfully retrieved", content = {
+					@Content(schema = @Schema(implementation = Activity.class), mediaType = "application/json") }),
+			@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = {
+					@Content(schema = @Schema()) }) })
 	public ResponseEntity<?> getById(@PathVariable String id) {
 		Activity activity = activityService.read(id);
 
@@ -102,10 +106,10 @@ public class ActivityController {
 		return ResponseEntity.ok(activity);
 	}
 
+	@PostMapping
 	@Operation(summary = "Create a new activity", description = "Returns the activity updated")
 	@ApiResponse(responseCode = "201", description = "Successfully created", content = {
 			@Content(schema = @Schema(), mediaType = "application/json") })
-	@PostMapping
 	public ResponseEntity<?> create(@RequestBody Activity activity, UriComponentsBuilder uri) {
 		activityService.create(activity);
 		return ResponseEntity.created(uri.path("/activities/{id}").build(activity.getId())).build();
@@ -114,9 +118,11 @@ public class ActivityController {
 
 	@DeleteMapping
 	@Operation(summary = "Delete the activity passed as parameter")
-	@ApiResponse(responseCode = "204", description = "Successfully deleted", content = { @Content(schema = @Schema()) })
-	@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = {
-			@Content(schema = @Schema()) })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "204", description = "Successfully deleted", content = {
+					@Content(schema = @Schema()) }),
+			@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = {
+					@Content(schema = @Schema()) }) })
 	public ResponseEntity<?> delete(@RequestBody Activity activity) {
 		activityService.delete(activity);
 		return ResponseEntity.noContent().build();
@@ -125,9 +131,11 @@ public class ActivityController {
 
 	@DeleteMapping("/{id}")
 	@Operation(summary = "Delete the activity as per the id")
-	@ApiResponse(responseCode = "204", description = "Successfully deleted", content = { @Content(schema = @Schema()) })
-	@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = {
-			@Content(schema = @Schema()) })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "204", description = "Successfully deleted", content = {
+					@Content(schema = @Schema()) }),
+			@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = {
+					@Content(schema = @Schema()) }) })
 	public ResponseEntity<?> deleteById(@PathVariable String id) {
 		activityService.delete(id);
 		return ResponseEntity.noContent().build();
@@ -135,25 +143,34 @@ public class ActivityController {
 
 	@PutMapping
 	@Operation(summary = "Update the activity passed as parameter", description = "Returns the activity updated")
-	@ApiResponse(responseCode = "200", description = "Successfully updated", content = {
-			@Content(schema = @Schema(implementation = Activity.class), mediaType = "application/json") })
-	@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = {
-			@Content(schema = @Schema()) })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Successfully updated", content = {
+					@Content(schema = @Schema(implementation = Activity.class), mediaType = "application/json") }),
+			@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = {
+					@Content(schema = @Schema()) }) })
 	public ResponseEntity<?> update(@RequestBody Activity activity) {
 		activityService.update(activity);
 		return ResponseEntity.ok(activity);
 	}
-	
+
 	@PatchMapping("/{id}/{imageName}")
-	@Operation(summary = "Update the image of the activity, with one of the images are uploaded in the gallery. It needs the activity id and the name of the image", description = "Returns the activity updated")
-	@ApiResponse(responseCode = "200", description = "Successfully updated", content = {
-			@Content(schema = @Schema(), mediaType = "application/json") })
-	@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = {
-			@Content(schema = @Schema()) })
+	@Operation(summary = "Update the image of the activity with one of the images of the gallery", description = "Returns the activity updated")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Successfully updated", content = {
+					@Content(schema = @Schema(), mediaType = "application/json") }),
+			@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = {
+					@Content(schema = @Schema()) }) })
+
 	public ResponseEntity<?> updateImage(@PathVariable String id, @PathVariable String imageName) {
 		activityService.updateImage(id, imageName);
 		return this.getById(id);
 	}
+
+	// ***************************************************************
+	//
+	// PRIVATE METHODS
+	//
+	// ***************************************************************
 
 	private ResponseEntity<?> getResponse(List<Activity> list) {
 		return list.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(addingSelfReferences(list));
