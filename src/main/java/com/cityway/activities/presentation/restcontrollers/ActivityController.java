@@ -101,7 +101,6 @@ public class ActivityController {
 		}
 
 		activity = addSelfLink(activity);
-
 		return ResponseEntity.ok(activity);
 	}
 
@@ -124,7 +123,7 @@ public class ActivityController {
 	public ResponseEntity<?> uploadImage(@PathVariable String id,
 			@RequestPart("image") MultipartFile imageFile) {
 		activityService.uploadImage(id, imageFile);
-		return ResponseEntity.ok(this.getById(id));
+		return this.getById(id);
 	}
 
 	@DeleteMapping
