@@ -21,6 +21,7 @@ public class Activity extends RepresentationModel<Activity> implements Serializa
 
 	private static final long serialVersionUID = 1L;
 
+	@NotBlank
 	@Schema(example = "6571f425f55ae713957d8454")
 	private String id;
 
@@ -32,9 +33,11 @@ public class Activity extends RepresentationModel<Activity> implements Serializa
 	@Schema(example = "ADVENTURE")
 	private Category category;
 
+	@NotBlank
 	@Schema(example = "When you think of Cappadocia, the image that comes to mind is hundreds of colourful hot air balloons flying over spectacular natural landscapes. Witness the incredible sight for yourself!")
 	private String description;
 
+	@NotBlank
 	@Schema(example = "180", defaultValue = "0")
 	private double price;
 
@@ -46,9 +49,11 @@ public class Activity extends RepresentationModel<Activity> implements Serializa
 	@Schema(example = "Turkey")
 	private String country;
 
+	@NotBlank
 	@Schema(example = "Sightseeing, Balloon Flight, Sunrise")
 	private String location;
 
+	@NotBlank
 	@Schema(example = "PT2H30M")
 	private Duration duration;
 
@@ -79,9 +84,11 @@ public class Activity extends RepresentationModel<Activity> implements Serializa
 			]""")
 	private Set<Map<String, Set<String>>> datesAvailables;
 
+	@NotBlank
 	@Schema(example = "false", defaultValue = "false")
 	private boolean adminPets;
 
+	@NotBlank
 	@Schema(example = "false", defaultValue = "false")
 	private boolean wheelchairAccessible;
 
