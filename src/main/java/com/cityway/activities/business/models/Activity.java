@@ -1,6 +1,7 @@
 package com.cityway.activities.business.models;
 
 import java.io.Serializable;
+import java.time.Duration;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -9,6 +10,7 @@ import org.springframework.hateoas.Links;
 import org.springframework.hateoas.RepresentationModel;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -47,6 +49,9 @@ public class Activity extends RepresentationModel<Activity> implements Serializa
 	@Schema(example = "Sightseeing, Balloon Flight, Sunrise")
 	private String location;
 
+	@Schema(example = "PT2H30M")
+	private Duration duration;
+
 	@NotBlank
 	@Schema(example = "[\"English\", \"Spanish\"]")
 	private Set<String> languages;
@@ -84,7 +89,7 @@ public class Activity extends RepresentationModel<Activity> implements Serializa
 		this.imagesGallery = new HashSet<>();
 	}
 
-	@Schema (description = "HATEOAS self link",example = "{\"self\": {\"href\": \"http://localhost:8080/activities/6571f425f55ae713957d8454\"}}")
+	@Schema(accessMode = AccessMode.READ_ONLY, description = "HATEOAS self link", example = "{\"self\": {\"href\": \"http://localhost:8080/activities/6571f425f55ae713957d8454\"}}")
 	@Override
 	public Links getLinks() {
 		return super.getLinks();

@@ -1,5 +1,6 @@
 package com.cityway.activities.integration.models;
 
+import java.time.Duration;
 import java.util.Map;
 import java.util.Set;
 
@@ -32,6 +33,8 @@ public class ActivityDto {
 	private String city;
 
 	private String country;
+	
+	private Duration duration;
 
 	private String location;
 
