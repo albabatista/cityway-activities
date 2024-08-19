@@ -99,64 +99,16 @@ public class ActivityServiceImpl implements ActivityService {
 		update(activity);
 	}
 
-	@Override
-	public List<Activity> getAll() {
-		List<ActivityDto> activitiesList = activityRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
-		return convertIntegrationToBusinessList(activitiesList);
-	}
 
 	@Override
-	public List<Activity> getByNameContaining(String name) {
-		List<ActivityDto> activitiesList = activityRepository.findByNameContainingIgnoreCase(name);
-		return convertIntegrationToBusinessList(activitiesList);
-	}
-
-	@Override
-	public List<Activity> getByCategory(Category category) {
+	public List<Activity> getByParams(String name, Category category, Double minPrice, Double maxPrice, String city,
+			String country, String language, String date, boolean adminPets, boolean wheelchairAccessible) {
+		
 		CategoryDto categoryDto = categoryMapper.categoryToDto(category);
-		List<ActivityDto> activitiesList = activityRepository.findByCategoryOrderByName(categoryDto);
-		return convertIntegrationToBusinessList(activitiesList);
-	}
 
-	@Override
-	public List<Activity> getByCity(String city) {
-		List<ActivityDto> activitiesList = activityRepository.findByCityIgnoreCaseOrderByName(city);
-		return convertIntegrationToBusinessList(activitiesList);
-	}
+		List<ActivityDto> activitiesList = activityRepository.findByParams(name, categoryDto, minPrice, maxPrice, city,
+				country, language, date, adminPets, wheelchairAccessible);
 
-	@Override
-	public List<Activity> getByCountry(String country) {
-		List<ActivityDto> activitiesList = activityRepository.findByCountryIgnoreCaseOrderByName(country);
-		return convertIntegrationToBusinessList(activitiesList);
-	}
-
-	@Override
-	public List<Activity> getByPriceBetween(double min, double max) {
-		List<ActivityDto> activitiesList = activityRepository.findByPriceBetween(min, max);
-		return convertIntegrationToBusinessList(activitiesList);
-	}
-
-	@Override
-	public List<Activity> getByAdminPetsTrue() {
-		List<ActivityDto> activitiesList = activityRepository.findByAdminPetsTrueOrderByName();
-		return convertIntegrationToBusinessList(activitiesList);
-	}
-
-	@Override
-	public List<Activity> getByWheelchairAccessibleTrue() {
-		List<ActivityDto> activitiesList = activityRepository.findByWheelchairAccessibleTrueOrderByName();
-		return convertIntegrationToBusinessList(activitiesList);
-	}
-
-	@Override
-	public List<Activity> getByLanguaguesContaining(String languague) {
-		List<ActivityDto> activitiesList = activityRepository.findByLanguagesContainingIgnoreCaseOrderByName(languague);
-		return convertIntegrationToBusinessList(activitiesList);
-	}
-
-	@Override
-	public List<Activity> getByDateAvailable(String date) {
-		List<ActivityDto> activitiesList = activityRepository.findByDate(date);
 		return convertIntegrationToBusinessList(activitiesList);
 	}
 

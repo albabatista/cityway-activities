@@ -48,43 +48,19 @@ public class ActivityController {
 
 			@ApiResponse(responseCode = "404", description = "Not found - Cannot find the activity", content = {
 					@Content(schema = @Schema()) }) })
-	public ResponseEntity<?> get(@RequestParam(required = false) String city,
-			@RequestParam(required = false) String country, @RequestParam(required = false) Category category,
-			@RequestParam(required = false) String name, @RequestParam(required = false) String language,
-			@RequestParam(required = false, defaultValue = "0") Double min, @RequestParam(required = false) Double max,
-			@RequestParam(required = false) String date, @RequestParam(required = false) Boolean wheelchairAccessible,
-			@RequestParam(required = false) Boolean adminPets) {
+	public ResponseEntity<?> get(
+			@RequestParam(required = false) String city,
+			@RequestParam(required = false) String country, 
+			@RequestParam(required = false) Category category,
+			@RequestParam(required = false) String name, 
+			@RequestParam(required = false) String language,
+			@RequestParam(required = false, defaultValue = "0") Double minPrice, 
+			@RequestParam(required = false) Double maxPrice,
+			@RequestParam(required = false) String date, 
+			@RequestParam(required = false, defaultValue = "false") boolean wheelchairAccessible,
+			@RequestParam(required = false, defaultValue = "false") boolean adminPets) {
 
-		List<Activity> listActivities = activityService.getAll();
-
-		if (city != null) {
-			listActivities = activityService.getByCity(city);
-
-		} else if (category != null) {
-			listActivities = activityService.getByCategory(category);
-
-		} else if (country != null) {
-			listActivities = activityService.getByCountry(country);
-
-		} else if (name != null) {
-			listActivities = activityService.getByNameContaining(name);
-
-		} else if (language != null) {
-			listActivities = activityService.getByLanguaguesContaining(language);
-
-		} else if (date != null) {
-			listActivities = activityService.getByDateAvailable(date);
-
-		} else if (min != null && max != null) {
-			listActivities = activityService.getByPriceBetween(min, max);
-
-		} else if (Boolean.TRUE.equals(adminPets)) {
-			listActivities = activityService.getByAdminPetsTrue();
-
-		} else if (Boolean.TRUE.equals(wheelchairAccessible)) {
-			listActivities = activityService.getByWheelchairAccessibleTrue();
-		}
-
+		List<Activity> listActivities = activityService.getByParams(name, category, minPrice, maxPrice, city, country, language, date, adminPets, wheelchairAccessible);	
 		return getResponse(listActivities);
 	}
 

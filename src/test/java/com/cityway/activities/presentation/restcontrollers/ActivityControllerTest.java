@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +29,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.cityway.activities.business.models.Activity;
-import com.cityway.activities.business.models.Category;
 import com.cityway.activities.business.services.ActivityService;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -127,94 +125,7 @@ class ActivityControllerTest {
 
 	}
 
-	@Test
-	void getAllTest() throws Exception {
-		when(activityService.getAll()).thenReturn(activities);
-		MvcResult mvcResult  = getMvcResultByParam(null, "");
-		
-		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		assertThat(responseBody).isEqualToIgnoringWhitespace(objectMapper.writeValueAsString(activities));
-	}
 
-	@Test
-	void getByCityTest() throws Exception {
-		activities = initList("List Activities By City.json");
-		when(activityService.getByCity("Paris")).thenReturn(activities);
-		MvcResult mvcResult = getMvcResultByParam("city", "Paris");
-
-		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		assertThat(responseBody).isEqualToIgnoringWhitespace(objectMapper.writeValueAsString(activities));
-	}
-
-	@Test
-	void getByCategoryTest() throws Exception {
-		activities = initList("List Activities By Category.json");
-		when(activityService.getByCategory(Category.ENTRANCE_TICKETS)).thenReturn(activities);
-		MvcResult mvcResult = getMvcResultByParam("category", "ENTRANCE_TICKETS");
-
-		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		assertThat(responseBody).isEqualToIgnoringWhitespace(objectMapper.writeValueAsString(activities));
-	}
-
-	@Test
-	void getByNameTest() throws Exception {
-		activities = List.of(activity);
-		when(activityService.getByNameContaining("Saint")).thenReturn(activities);
-		MvcResult mvcResult = getMvcResultByParam("name", "Saint");
-
-		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		assertThat(responseBody).isEqualToIgnoringWhitespace(objectMapper.writeValueAsString(activities));
-	}
-
-	@Test
-	void getByLanguageTest() throws Exception {
-		activities = initList("List Activities By Language.json");
-		when(activityService.getByLanguaguesContaining("German")).thenReturn(activities);
-		MvcResult mvcResult = getMvcResultByParam("language", "German");
-
-		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		assertThat(responseBody).isEqualToIgnoringWhitespace(objectMapper.writeValueAsString(activities));
-	}
-
-	@Test
-	void getByDateTest() throws Exception {
-		activities = List.of(activity);
-		when(activityService.getByDateAvailable("11/12/2023")).thenReturn(activities);
-		MvcResult mvcResult = getMvcResultByParam("date", "11/12/2023");
-
-		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		assertThat(responseBody).isEqualToIgnoringWhitespace(objectMapper.writeValueAsString(activities));
-	}
-
-	@Test
-	void getByPriceTest() throws Exception {
-		activities = List.of(activity);
-		when(activityService.getByPriceBetween(150, 160)).thenReturn(activities);
-		MvcResult mvcResult = mockMvc
-				.perform(get(ENDPOINT).param("min", "150").param("max", "160").contentType(CONTENT_TYPE))
-				.andExpect(status().isOk()).andReturn();
-
-		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		assertThat(responseBody).isEqualToIgnoringWhitespace(objectMapper.writeValueAsString(activities));
-	}
-
-	@Test
-	void getByAdminPetsTest() throws Exception {
-		activities = new ArrayList<Activity>();
-		when(activityService.getByAdminPetsTrue()).thenReturn(activities);
-
-		mockMvc.perform(get(ENDPOINT).param("adminPets", "true").contentType(CONTENT_TYPE))
-				.andExpect(status().isNotFound()).andReturn();
-	}
-
-	@Test
-	void getByWheelchairAccessibleTest() throws Exception {
-		activities = new ArrayList<Activity>();
-		when(activityService.getByWheelchairAccessibleTrue()).thenReturn(activities);
-
-		mockMvc.perform(get(ENDPOINT).param("wheelchairAccessible", "true").contentType(CONTENT_TYPE))
-				.andExpect(status().isNotFound()).andReturn();
-	}
 
 	// *****************************************************************
 	//

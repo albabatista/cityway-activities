@@ -141,69 +141,7 @@ class ActivityServiceImplTest {
 		
 	}
 
-	@Test
-	void getByCategory() {
-		initGetTest();
-		when(categoryMapper.categoryToDto(Category.DAY_TRIP)).thenReturn(categoryDto);
-
-		when(activityRepository.findByCategoryOrderByName(categoryDto)).thenReturn(List.of(activityDto));
-		assertEquals(1, activityServiceImpl.getByCategory(Category.DAY_TRIP).size());
-	}
-
-	@Test
-	void getAllTest() {
-		initGetTest();
-		when(activityRepository.findAll()).thenReturn(List.of(activityDto, activity2Dto, activity3Dto));
-		assertEquals(3, activityServiceImpl.getAll().size());
-	}
-
-	@Test
-	void getByCityTest() {
-		initGetTest();
-		when(activityRepository.findByCityIgnoreCaseOrderByName("Paris")).thenReturn(List.of(activityDto, activity2Dto));
-		assertEquals(2, activityServiceImpl.getByCity("Paris").size());
-	}
-
-	@Test
-	void getByNameTest() {
-		initGetTest();
-		when(activityRepository.findByNameContainingIgnoreCase("Saint")).thenReturn(List.of(activityDto));
-		assertEquals(1, activityServiceImpl.getByNameContaining("Saint").size());
-	}
-
-	@Test
-	void getByDateTest() {
-		initGetTest();
-		when(activityRepository.findByDate("11/12/2023")).thenReturn(List.of(activityDto, activity2Dto));
-		assertEquals(2, activityServiceImpl.getByDateAvailable("11/12/2023").size());
-	}
-
-	@Test
-	void getByLanguageTest() {
-		initGetTest();
-		when(activityRepository.findByLanguagesContainingIgnoreCaseOrderByName("English"))
-				.thenReturn(List.of(activityDto, activity2Dto, activity3Dto));
-		assertEquals(3, activityServiceImpl.getByLanguaguesContaining("English").size());
-	}
-
-	@Test
-	void getByPriceBetweenTest() {
-		initGetTest();
-		when(activityRepository.findByPriceBetween(30, 50)).thenReturn(List.of(activity2Dto, activity3Dto));
-		assertEquals(2, activityServiceImpl.getByPriceBetween(30, 50).size());
-	}
-
-	@Test
-	void getByAdminPetsTrueTest(){
-		when(activityRepository.findByAdminPetsTrueOrderByName()).thenReturn(List.of());
-		assertEquals(0, activityServiceImpl.getByAdminPetsTrue().size());
-	}
-
-	@Test
-	void getByWheelchairAccessibleTrueTest(){
-		when(activityRepository.findByWheelchairAccessibleTrueOrderByName()).thenReturn(List.of());
-		assertEquals(0, activityServiceImpl.getByWheelchairAccessibleTrue().size());
-	}
+	
 
 	// ***************************************************************
 	//
